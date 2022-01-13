@@ -1,30 +1,34 @@
 {
-  "name": "simply-notes",
-  "private": true,
+  "name": "html",
+  "version": "1.0.0",
+  "description": "Web based project to make markdown projects and share them.",
+  "main": "index.js",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "rollup -c -w",
+    "build": "rollup -c"
   },
+  "repository": {
+    "type": "git",
+    "url": "github.com/Casper64/simple-notes.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Casper64/simple-notes/issues"
+  },
+  "homepage": "https://github.com/Casper64/simple-notes#readme",
   "dependencies": {
-    "@auth0/nextjs-auth0": "^1.7.0",
-    "axios": "^0.24.0",
-    "mobx": "^6.3.12",
-    "mobx-react": "^7.2.1",
-    "mongoose": "^6.1.6",
-    "next": "12.0.8",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
-    "sass": "^1.47.0",
-    "swr": "^1.1.2"
+    "@babel/core": "^7.15.5",
+    "@babel/preset-env": "^7.15.6"
   },
   "devDependencies": {
-    "@types/node": "17.0.8",
-    "@types/react": "17.0.38",
-    "@types/react-dom": "^17.0.11",
-    "eslint": "8.6.0",
-    "eslint-config-next": "12.0.8",
-    "typescript": "4.5.4"
+    "@babel/plugin-transform-runtime": "^7.15.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^13.0.4",
+    "rollup": "^2.56.3",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-multi-input": "^1.3.1"
   }
 }
