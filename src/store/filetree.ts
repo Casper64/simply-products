@@ -30,7 +30,11 @@ export class FileTreeStore {
         rename: false
     };
     public isLoading: boolean;
-    public selected: string = '';
+    public selected: Document | null = null;
+    public lineObj = {
+        line: -1,  /* -1 = top, -2 = bottom */
+        src: 0 /* 0 = editor, 1 = previewer */
+    };
 
     private contextMenuCallbackList: ContextMenuCallback[] = [];
 
@@ -50,8 +54,17 @@ export class FileTreeStore {
     }
     
     @action
-    public setSelected(val = '') {
+    public setSelected(val = null as null | Document) {
         this.selected = val;
+    }
+    @action 
+    public setLine(lineObj: any) {
+        this.lineObj = lineObj;
+    }
+
+    @action
+    public setCode(code: string) {
+        if (this.selected) this.selected.code = code;
     }
 
     @action

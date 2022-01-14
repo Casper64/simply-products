@@ -10,21 +10,22 @@ import { FileTree } from '@/components/FileTree'
 import Img from '@/components/Img'
 import Cog from '~/assets/cog.svg'
 import { GetServerSidePropsContext } from 'next/types'
+import { observer } from 'mobx-react'
+import MarkdownPreview from '@/components/MarkdownPreview'
+import MarkdownEditor from '@/components/MarkdownEditor'
 
 interface ProjectPageProps {
     projects: Project[];
     documents: Document[];
 }
 
-const ProjectPage: Page<ProjectPageProps> = ({ projects, documents }) => {
+const ProjectPage: Page<ProjectPageProps> = observer(({ projects, documents }) => {
 
     const router = useRouter();
     const [id, setId] = useState(router.query.id);
     const [project, setProject] = useState(projects?.find(p => p._id === id));
     
-    const selected = store.fileTreeStore?.selected;
-
-    
+    const selected = store.fileTreeStore.selected;
 
     useEffect(() => {
         setId(router.query.id)
@@ -46,12 +47,18 @@ const ProjectPage: Page<ProjectPageProps> = ({ projects, documents }) => {
                 <FileTree project={project}/>
             </div>
             <nav></nav>
-            <div className="editor-container">
-                { selected.length === 0 && <h1 className="title">Select or create a file to get started!</h1> }
+            <div className={`markdown-container ${selected ? '' : 'no-selected'}`}>
+                { selected === null && <h1 className="title">Select or create a file to get started!</h1> }
+                { selected !== null && 
+                <>
+                    <MarkdownEditor selected={selected}/>
+                    <MarkdownPreview selected={selected}/>
+                </>	
+                }
             </div>
         </div>
     )
-}
+})
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
     await dbConnect();

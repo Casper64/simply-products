@@ -11,7 +11,7 @@ interface UseContextMenuProps {
 }
 
 export const useContextMenu = ({store, document}: UseContextMenuProps) => {
-    let [selected, setSelected] = useState(Boolean(store.selected));
+    let [selected, setSelected] = useState(Boolean(store.selected?._id === document._id));
     let [forceSelect, setForceSelected] = useState(false);
     let [rename, setRename] = useState(false);
     let textNode: HTMLInputElement;
@@ -68,7 +68,7 @@ export const useContextMenu = ({store, document}: UseContextMenuProps) => {
     }
 
     useEffect(() => {
-        setSelected(store.selected === document._id);
+        setSelected(store.selected?._id === document._id);
     })
 
     return {

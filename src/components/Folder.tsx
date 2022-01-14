@@ -108,9 +108,11 @@ export const Folder: React.FC<FolderProps> = observer((props) => {
             name: tempInput.value,
             folder,
             parent: root._id,
-            project: project._id
+            project: project._id,
+            code: '# Hello world'
         });
         const doc = data.data;
+        if (doc.folder === false) store.fileTreeStore.setSelected(doc);
         store.fileTreeStore.documents.addModel(doc);
     }
 

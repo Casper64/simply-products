@@ -1,5 +1,6 @@
 import { UserProvider } from '@auth0/nextjs-auth0';
 import "styles/main.scss"
+import "styles/markdown.scss"
 import { MyAppProps } from 'types';
 import { ReactNode } from 'react';
 import MainLayout from '@/Layouts'

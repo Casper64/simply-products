@@ -38,7 +38,7 @@ export const File: React.FC<FileProps> = observer((props) => {
     }
 
     const selectDocument = async () => {
-        store.fileTreeStore.setSelected(doc._id);
+        store.fileTreeStore.setSelected(doc);
         // TODO: select document callback
     }
 

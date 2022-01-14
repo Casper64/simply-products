@@ -1,17 +1,10 @@
-import React, { Component, ReactNode, createElement, useState, useEffect } from "react";
-import ReactDom from "react-dom"
+import React, { useState, useEffect } from "react";
 
 import { Folder } from "@/components/Folder";
 
-import store, { ContextMenuCallback, FileTreeStore } from "@/store"
+import store, { ContextMenuCallback } from "@/store"
 import { Project } from "~/models/Project";
 import axios from 'axios'
-import useSWR from "swr";
-import { makeObservable, observable } from 'mobx'
-
-const fetcher = (url: string) => axios.post(url).then(res => res.data)
-
-// import { configure } from "mobx";
 
 export interface FileTreeProps {
     project?: Project
@@ -57,6 +50,7 @@ export const FileTree: React.FC<FileTreeProps> = ({ project }) => {
             store.fileTreeStore.documents.deleteModel(document);
             console.log(store.fileTreeStore.documents.models)
         }
+        if (store.fileTreeStore.selected === document._id) store.fileTreeStore.setSelected(null)
     }
 
     useEffect(() => {
