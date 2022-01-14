@@ -1,4 +1,6 @@
 import { action, makeAutoObservable } from "mobx"
+import { Document } from "~/models/Document";
+import { ModelHandler } from ".";
 // import { any } from "../filedb";
 
 export interface ContextMenuCallback {
@@ -9,7 +11,7 @@ export interface FileTreeStoreConstructorOptions {
 }
 export interface ContextMenuOptions {
     open: boolean;
-    document: any;
+    document?: Document;
     style: {
         left: string;
         top: string;
@@ -18,10 +20,9 @@ export interface ContextMenuOptions {
 }
 
 export class FileTreeStore {
-    public documents: any[] = [];
+    public documents = new  ModelHandler<Document>();
     public contextMenu: ContextMenuOptions = {
         open: false,
-        document: null,
         style: {
             left: "0px",
             top: "0px"
@@ -29,7 +30,7 @@ export class FileTreeStore {
         rename: false
     };
     public isLoading: boolean;
-    public selected: number = -1;
+    public selected: string = '';
 
     private contextMenuCallbackList: ContextMenuCallback[] = [];
 
@@ -44,29 +45,12 @@ export class FileTreeStore {
     }
 
     @action
-    public addDocument(document: any) {
-        this.documents.push(document);
-    }
-    @action removeDocument(document: any) {
-        this.documents = this.documents.filter(d => d.getGuid() !== document.getGuid());
-    }
-    @action changeDocument(document: any) {
-        let index = this.documents.findIndex(o => o.getGuid() === document.getGuid());
-        this.documents.splice(index, 1, document);
-    }
-
-    @action
-    public setDocuments(documents: any[]) {
-        this.documents = documents;
-    }
-
-    @action
     public setLoading(val: boolean) {
         this.isLoading = val;
     }
     
     @action
-    public setSelected(val = -1) {
+    public setSelected(val = '') {
         this.selected = val;
     }
 

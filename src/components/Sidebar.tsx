@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from 'react'
 import { useState } from 'react'
 import store from '@/store'
 import { Category } from 'models/Category';
-import Image from 'next/image'
+import Img from '@/components/Img'
 
 import FolderClosed from "~/assets/folder.svg"
 import FolderOpen from "~/assets/folder-open.svg"
@@ -61,16 +61,11 @@ export const Sidebar: React.FC = () => {
                             onClick={() => goto(category)}
                             id={category._id}
                         >
-                            <div className="img folder-closed">
-                                <Image layout="fill"
-                                src={FolderClosed.src}
-                                alt="folder-closed"/>
-                            </div>
-                            <div className="img folder-open">
-                                <Image  layout="fill"
-                                src={FolderOpen.src}
+                            <Img className="img folder-closed" src={FolderClosed.src}
+                                alt="folder-closed" />
+                            <Img className="img folder-open" src={FolderOpen.src}
                                 alt="folder-open"/>
-                            </div>
+  
                             <p>{category.name}</p>
                         </div>
                     )

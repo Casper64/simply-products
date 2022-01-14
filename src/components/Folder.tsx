@@ -8,27 +8,29 @@ import AddFolder from "~/assets/add-folder.svg"
 import FileImage from "~/assets/file.svg"
 
 import { useContextMenu } from "@/hooks";
-import { FileTreeStore } from '@/store';
+import store from '@/store';
 import { observer } from 'mobx-react-lite';
+import { Document } from 'models/Document';
+import { Project } from 'models/Project';
+import Img from '@/components/Img'
+import axios from 'axios';
 
 interface FolderProps {
-    store: FileTreeStore;
     className: string;
     step: number;
-    root?: any;
+    root: Document | Project;
+    project: Project;
 }
 
 export const Folder: React.FC<FolderProps> = observer((props) => {
-    const { className, step, store } = props;
+    let { className, step, root, project } = props;
     let [children, setChildren] = useState([] as ReactElement[]);
-    let [documents, setDocuments] = useState(store.documents);
+    let [documents, setDocuments] = useState(store.fileTreeStore.documents.models);
     let [open, setOpen] = useState(false);
     let tempInput: HTMLInputElement | null = null;
-    let root = props.root;
-    if (root == undefined) {
-        // root = store.documents.find(d => d.is_root = true);
-    }
-
+    //@ts-ignore
+    if (!root) root = project as Document;
+    
     const {
         rightClick,
         keyUpContextMenu,
@@ -36,16 +38,14 @@ export const Folder: React.FC<FolderProps> = observer((props) => {
         forceSelect,
         rename,
         setRename
-    } = useContextMenu({store, document: root});
+        //@ts-ignore
+    } = useContextMenu({store: store.fileTreeStore, document: root});
 
-    const getRoot = () => {
-        // return documents.find(d => d.is_root);
-    }
 
-    const nextLayer = (documents: any[]) => {
+    const nextLayer = (documents: Document[]) => {
         
         documents = documents.filter((d) => {
-            return d.parent === root.id;
+            return d.parent === root._id;
         })
         documents.sort(doc => {
             return doc.folder ? -1 : 1
@@ -56,25 +56,20 @@ export const Folder: React.FC<FolderProps> = observer((props) => {
                     { children }
                     { documents.map(d => {
                         if (d.folder) {
-                            let newProps = {...props};
-                            newProps.className = "";
-                            newProps.step += 1;
-                            newProps.root = d.getGuid();
-                            return <Folder {...newProps} />
+                            return <Folder key={d._id} root={d} step={step + 1} className='' project={project}/>
                             // return <div className="nested-container"></div> 
                         }
                         else {
-                            let newProps = {...props};
-                            newProps.step += 1;
                             return <File 
+                                key={d._id}
                                 doc={d}
-                                {...props}
+                                step={step + 1}
                             />
                         }
                     }) }
                 </Fragment>
             )
-            if (root.id === getRoot()/* .id */) {
+            if (root._id === project._id) {
                 return Content;
             }
             else {
@@ -101,31 +96,32 @@ export const Folder: React.FC<FolderProps> = observer((props) => {
         else return 
     }
 
+    // TODO: update temp input to hook like in '@/components/Sidebar.tsx'
     const setNewDocument = async (folder: boolean) => {
-        if (tempInput === null || tempInput.value.replace(/\s/g, "") === "") {
+        if (tempInput === null || tempInput.value.trim().length === 0) {
             blurInput();
             return
         }
         blurInput();
 
-        const name = tempInput.value;
-        let document: any = {
-            id: Date.now(),
-            name,
-            parent: root.id,
-            folder
-        };
-        store.addDocument(document);
+        const { data } = await axios.post('/api/documents', {
+            name: tempInput.value,
+            folder,
+            parent: root._id,
+            project: project._id
+        });
+        const doc = data.data;
+        store.fileTreeStore.documents.addModel(doc);
     }
 
-    const addFile: React.MouseEventHandler<SVGSVGElement> = (e) => {
+    const addFile: React.MouseEventHandler<HTMLImageElement> = (e) => {
         e.stopPropagation();
         setOpen(true);
         setChildren([
             (
                 <div key="temp-file" className="with-icon temp">
                     { nestedBorders(step) || <div className="nested-borders"></div> }
-                    <FileImage/>
+                    <Img src={FileImage.src} alt="file"/>
                     <input 
                         type="text" 
                         ref={setTempInput}
@@ -135,14 +131,15 @@ export const Folder: React.FC<FolderProps> = observer((props) => {
             )
         ]);
     }
-    const addFolder: React.MouseEventHandler<SVGSVGElement> = (e) => {
+    const addFolder: React.MouseEventHandler<HTMLImageElement> = (e) => {
         e.stopPropagation();
         setOpen(true);
         setChildren([
             (
                 <div key="temp-folder" className="with-icon temp">
                     { nestedBorders(step) || <div className="nested-borders"></div> }
-                    <FolderOpen />
+                    <Img className="folder-closed" src={FolderClosed.src}
+                        alt="folder-closed"/>
                     <input 
                         type="text" 
                         ref={setTempInput}
@@ -173,8 +170,8 @@ export const Folder: React.FC<FolderProps> = observer((props) => {
     }
 
     useEffect(() => {
-        setDocuments(store.documents)
-    }, [store]);
+        setDocuments(store.fileTreeStore.documents.models)
+    });
 
     const selectDocument = async () => {
         setOpen(!open);
@@ -185,20 +182,30 @@ export const Folder: React.FC<FolderProps> = observer((props) => {
         <Fragment>
             <div className={`${className} folder with-icon ${open ? 'open' : ''} ${forceSelect ? 'selected' : ''}`} 
                 onClick={selectDocument} 
-                onContextMenu={rightClick}>
+                onContextMenu={(event) => {
+                    if (root._id === project._id) return
+                    rightClick(event);
+                }}>
                 { nestedBorders(step-1) }
-                <FolderClosed className="folder-closed"/>
-                <FolderOpen className="folder-open"/>
-                <p ref={setTextElement} 
-                    contentEditable={ rename ? true : false} 
+                <Img className="folder-closed" src={FolderClosed.src}
+                    alt="folder-closed"/>
+                <Img className="folder-open" src={FolderOpen.src}
+                    alt="folder-open"/>
+                <p style={{display: rename ? 'none' : 'block'}}>
+                        { root.name }
+                    </p>
+                <input style={{display: rename ? 'block' : 'none'}}
+                //@ts-ignore
+                    ref={setTextElement}
                     onKeyUp={keyUpContextMenu} 
                     onBlur={() => {
-                        setRename(false)
-                }}>
-                    { root.name }
-                </p>
-                <AddFolder onClick={addFolder} className="add-icon" />
-                <AddFile onClick={addFile} className="add-icon" />
+                    setRename(false)
+                    }}
+                />
+                <Img onClick={addFolder} className="add-icon" src={AddFolder.src}
+                    alt="add-folder"/>
+                <Img onClick={addFile} className="add-icon" src={AddFile.src}
+                    alt="add-file"/>
             </div>
             { nextLayer(documents) }
         </Fragment>

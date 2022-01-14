@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
 import { FileTreeStore } from "@/store";
+import axios from "axios";
+import { Document } from "~/models/Document";
 // import { FileDB, any } from "../filedb";
 
 
 interface UseContextMenuProps {
     store: FileTreeStore;
-    document: any
+    document: Document
 }
 
 export const useContextMenu = ({store, document}: UseContextMenuProps) => {
     let [selected, setSelected] = useState(Boolean(store.selected));
     let [forceSelect, setForceSelected] = useState(false);
     let [rename, setRename] = useState(false);
-    let textNode: HTMLParagraphElement;
+    let textNode: HTMLInputElement;
 
     const rightClick: React.MouseEventHandler<HTMLDivElement> = (event) =>{
         event.preventDefault();
@@ -52,21 +54,21 @@ export const useContextMenu = ({store, document}: UseContextMenuProps) => {
         else if (event.key == "Enter") {
             setForceSelected(false);
             setRename(false);
-            document.name = textNode.innerText;
-            // await commitObject(document);
-            store.changeDocument(document);
+            document.name = textNode.value.trim();
+            await axios.put(`/api/documents/${document._id}`, document);
+            store.documents.updateModel(document);
             textNode.blur();
             store.setContextMenu({...store.contextMenu, rename: false})
         }
     }
 
-    const setTextElement = (element: HTMLParagraphElement) => {
-        if (element === null) return
+    const setTextElement = (element: HTMLInputElement) => {
+        if (!element) return
         textNode = element;
     }
 
     useEffect(() => {
-        setSelected(store.selected === document.id);
+        setSelected(store.selected === document._id);
     })
 
     return {

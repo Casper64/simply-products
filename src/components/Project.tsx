@@ -1,7 +1,7 @@
 import { Project } from 'models/Project'
 import Link from 'next/link'
 import React from 'react'
-import Image from 'next/image'
+import Img from '@/components/Img'
 
 import FolderClosed from "~/assets/folder.svg"
 
@@ -13,12 +13,9 @@ const Project: React.FC<ProjectProps> = (props) => {
     return (
         <Link passHref href={`/projects/${props.project._id}`}>
             <div className="project with-icon">
-                <div className="img folder-closed">
-                <Image
-                    src={FolderClosed.src}
-                    layout="fill"
+                <Img className="img folder-closed" src={FolderClosed.src}
                     alt="folder-closed"/>
-                </div>
+
                 <p>{props.project.name}</p>
             </div>
         </Link>

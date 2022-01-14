@@ -1,19 +1,19 @@
 import React, { createElement, Fragment } from "react"
 import { useContextMenu } from "@/hooks";
 // import { any, FileDB } from '../../filedb/index';
-import { FileTreeStore } from '@/store';
+import store from '@/store';
 import { observer } from 'mobx-react-lite';
 
 import FileImage from "~/assets/file.svg";
+import Img from '@/components/Img'
 
 interface FileProps {
     step: number;
     doc: any;
-    store: FileTreeStore;
 };
 
 export const File: React.FC<FileProps> = observer((props) => {
-    const { doc, step, store } = props;
+    const { doc, step } = props;
     const {
         rightClick,
         keyUpContextMenu,
@@ -22,13 +22,13 @@ export const File: React.FC<FileProps> = observer((props) => {
         forceSelect,
         rename,
         setRename
-    } = useContextMenu({store, document: doc});
+    } = useContextMenu({store: store.fileTreeStore, document: doc});
 
     const nestedBorders = () => {
-        if (step > 1) {
+        if (step > 2) {
             return (
                 <div className="nested-borders">
-                    {new Array(step-1).fill(0).map((v, i) => {
+                    {new Array(step-2).fill(0).map((v, i) => {
                         return <div key={i} className="nested-border"></div>
                     })}
                 </div>
@@ -38,7 +38,7 @@ export const File: React.FC<FileProps> = observer((props) => {
     }
 
     const selectDocument = async () => {
-        store.setSelected(doc.id);
+        store.fileTreeStore.setSelected(doc._id);
         // TODO: select document callback
     }
 
@@ -48,15 +48,18 @@ export const File: React.FC<FileProps> = observer((props) => {
                 onClick={selectDocument} 
                 onContextMenu={rightClick}>
                 { nestedBorders() }
-                <FileImage />
-                <p ref={setTextElement} 
-                    contentEditable={ rename ? true : false} 
+                <Img src={FileImage.src} alt="file"/>
+                    <p style={{display: rename ? 'none' : 'block'}}>
+                        { doc.name }
+                    </p>
+                <input style={{display: rename ? 'block' : 'none'}}
+                //@ts-ignore
+                    ref={setTextElement}
                     onKeyUp={keyUpContextMenu} 
                     onBlur={() => {
-                        setRename(false)
-                }}>
-                    { doc.name }
-                </p>
+                    setRename(false)
+                    }}
+                />
             </div>
         </Fragment>
     )
