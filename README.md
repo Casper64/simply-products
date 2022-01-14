@@ -1,3 +1,7 @@
+# Simply Notes
+
+newer version of my [old simple-notes website](https://github.com/Casper64/simply-notes/tree/simply-notes-legacy) for making notes with markdown
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
