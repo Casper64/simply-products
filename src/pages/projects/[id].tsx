@@ -14,6 +14,8 @@ import MarkdownPreview from '@/components/MarkdownPreview'
 import MarkdownEditor from '@/components/MarkdownEditor'
 import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0'
 import ProjectNav from '@/components/ProjectNav'
+import DangerZone from '@/components/DangerZone'
+import axios from 'axios'
 
 interface ProjectPageProps {
     projects: Project[];
@@ -28,6 +30,21 @@ const ProjectPage: Page<ProjectPageProps> = observer(({ projects, documents }) =
     const [layout, setLayout] = useState('split');
     
     const selected = store.fileTreeStore.selected;
+
+    const deleteProject = async () => {
+        const { data } = await axios.delete(`/api/projects/${project?._id}`);
+        if (data.success) {
+            router.push('/dashboard');
+        }
+    }
+    const renameProject = async (name: string) => {
+        let p = {
+            ...project,
+            name
+        } as Project
+        await axios.put(`/api/projects/${project?._id}`, p)
+        store.databaseStore.projects.updateModel(p)
+    }
 
     useEffect(() => {
         setId(router.query.id)
@@ -79,8 +96,17 @@ const ProjectPage: Page<ProjectPageProps> = observer(({ projects, documents }) =
                 </>	
                 }
                 { selected === null && layout === 'settings' &&
-                    <div className="settings-container">
-                        <h1>Settings</h1>
+                    <div className="settings-display">
+                        <p className="title">Settings { project?.name }</p>
+                        <div className="card">
+                            <div className="header">
+                                <p>Project</p>
+                            </div>
+                        </div>
+                        <DangerZone 
+                            model={project} 
+                            delete={deleteProject}
+                            rename={renameProject}/>
                     </div>
                 }
             </div>

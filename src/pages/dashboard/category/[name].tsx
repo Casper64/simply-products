@@ -8,6 +8,7 @@ import axios from 'axios'
 import { useUser, withPageAuthRequired } from '@auth0/nextjs-auth0'
 import { Category } from '~/models/Category'
 import { observer } from 'mobx-react'
+import DangerZone from '@/components/DangerZone'
 
 
 const CategoryPage: Page = observer(() => {
@@ -20,13 +21,7 @@ const CategoryPage: Page = observer(() => {
     const [add, setAdd] = useState(false);
     const { user } = useUser();
     const inputEl = useRef(null as HTMLInputElement | null);
-    const [inputState, setInputState] = useState('');
-    const [remove, setRemove] = useState({
-        on: false,
-        type: '',
-        id: ''
-    })
-    const inputDanger = useRef(null) as React.MutableRefObject<null | HTMLInputElement>
+    
 
     const getProjects = () => {
         if (!id) return []
@@ -34,7 +29,7 @@ const CategoryPage: Page = observer(() => {
     }
 
     const getCategory = () => {
-        if (!id) return null
+        if (!id) return undefined
         return categories.find(c => c._id === (id as string))
     }
 
@@ -57,36 +52,21 @@ const CategoryPage: Page = observer(() => {
     }
 
     const deleteCategory = async () => {
-        const { data } = await axios.delete(`/api/categories/${id}`)
+        const { data } = await axios.delete(`/api/categories/${getCategory()?._id}`)
         if (data.success) {
             router.push('/dashboard')
         }
     }
 
-    const renameCategory = async () => {
+    const renameCategory = async (name: string) => {
         let cat = {
             ...getCategory(),
-            name: inputState
+            name
         } as Category
-        await axios.put(`/api/categories/${id}`, cat);
+        await axios.put(`/api/categories/${getCategory()?._id}`, cat);
         store.databaseStore.categories.updateModel(cat)
     }
 
-    const keyUp: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
-        if (event.key == "Escape") {
-            inputDanger.current?.blur();
-        }
-        else if (event.key == "Enter") {
-            if (remove.type === 'category' && inputDanger.current?.value === getCategory()?.name) {
-                deleteCategory();
-            }
-            else if (remove.type === "rename") {
-                renameCategory();
-                inputDanger.current?.blur();
-            }
-        }
-    }
-    
     useEffect(() => {
         setId(router.query.id)
         if (!id) {
@@ -100,14 +80,8 @@ const CategoryPage: Page = observer(() => {
         }
     }, [add])
 
-    useEffect(() => {
-        if (remove.on) {
-            inputDanger.current?.focus();
-        }
-    }, [remove])
-
     return (
-        <div className="projects-display">
+        <div className="settings-display">
             <p className="title">Dashboard { getCategory()?.name }</p>
             <div className="card projects-list">
                 <div className="header">
@@ -129,52 +103,11 @@ const CategoryPage: Page = observer(() => {
                     </div>
                 </div>
             </div>
-            <div className="card danger-zone">
-                <div className="header">
-                    <p>Danger zone</p>
-                </div>
-                <div className="danger-container">
-                    { remove.on && remove.type === "rename" && (
-                        <p className="label">Hit enter to rename</p>
-                    ) }
-                    { remove.on &&  remove.type === "category" && (
-                        <p className="verify">Type "
-                            <span className={inputState === getCategory()?.name ? 'correct' : 'not-correct'}>
-                                { getCategory()?.name }
-                            </span>
-                        " adn press enter</p>
-                    ) }
-                    { remove.on && <input 
-                        ref={inputDanger} 
-                        value={inputState}
-                        onChange={(e) => setInputState(e.target.value)}
-                        onKeyUp={keyUp} 
-                        onBlur={() => {
-                            setInputState('');
-                            setRemove({
-                                ...remove,
-                                on: false
-                            })
-                        }}
-                    /> }
-                    <button 
-                        className="btn danger"
-                        onClick={() => setRemove({
-                            id: id as string,
-                            on: true,
-                            type: 'rename'
-                        })}
-                    >Rename</button>
-                    <button 
-                        className="btn danger"
-                        onClick={() => setRemove({
-                            id: id as string,
-                            on: true,
-                            type: 'category'
-                        })}
-                    >Delete { getCategory()?.name}</button>
-                </div>
-            </div>
+            <DangerZone 
+                model={getCategory()}
+                delete={deleteCategory}
+                rename={renameCategory} 
+            />
         </div>
     )
 })

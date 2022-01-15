@@ -26,6 +26,8 @@ html {
     --nested-border: #a9a9a9;
     --textarea: #24292e;
     --table-second: #f5f5f5;
+    --inactive-text: #9aa1ae;
+
 
 
     /* Switch */
@@ -50,7 +52,6 @@ html {
 
 
 [data-theme="dark"] {
-    --inactive-text: #9aa1ae;
     --text: #fff;
     --textarea: #edf0f5;
     --selected: #252930;
@@ -61,7 +62,6 @@ html {
     --selected-hover: #2C313A;
     --nested-border: #585858;
     --table-second: var(--selected-hover);
-    --text-inactive: #a8adb5;
 }
 
 h1,
@@ -423,7 +423,7 @@ nav .nav-items .nav-item a {
     }
 }
 
-.projects-display {
+.settings-display {
     padding: 50px 100px;
     max-width: min(1100px, 100%);
     width: 100%;
@@ -438,6 +438,7 @@ nav .nav-items .nav-item a {
 
     & > .title {
         grid-column: span 2;
+        text-align: center;
     }
 }
 
@@ -535,6 +536,9 @@ nav .nav-items .nav-item a {
         color: var(--text);
         .not-correct {
             color: var(--inactive-text);
+        }
+        .correct {
+            color: var(--error);
         }
     }
 }

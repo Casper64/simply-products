@@ -37,7 +37,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     new: true,
                     runValidators: true
                 })
-                if (!document) {
+                if (!project) {
                     return res.status(400).json({ success: false })
                 }
                 res.status(200).json({ success: true, data: project })
