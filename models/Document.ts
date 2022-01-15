@@ -6,6 +6,7 @@ export interface Document extends D {
     parent: string;
     project: string;
     code: string;
+    owner: string;
 }
 
 const DocumentSchema = new mongoose.Schema<Document>({
@@ -13,7 +14,8 @@ const DocumentSchema = new mongoose.Schema<Document>({
     folder: Boolean,
     parent: String,
     project: String,
-    code: String
+    code: String,
+    owner: String
 });
 
 export default mongoose.models.Document as mongoose.Model<Document, {}, {}, {}> || mongoose.model('Document', DocumentSchema)

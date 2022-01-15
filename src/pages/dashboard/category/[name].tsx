@@ -1,10 +1,11 @@
 import React, { ReactNode, useEffect, useRef, useState } from 'react'
-import Home from '@/pages/index'
+import Home from '@/pages/dashboard'
 import { Page } from 'types'
 import { useRouter } from 'next/router'
 import store from '@/store'
 import Project from '@/components/Project'
 import axios from 'axios'
+import { useUser, withPageAuthRequired } from '@auth0/nextjs-auth0'
 
 
 const CategoryPage: Page = () => {
@@ -15,6 +16,7 @@ const CategoryPage: Page = () => {
     const router = useRouter();
     const [id, setId] = useState(router.query.id);
     const [add, setAdd] = useState(false);
+    const { user } = useUser();
     const inputEl = useRef(null as HTMLInputElement | null);
 
     const getProjects = () => {
@@ -36,7 +38,8 @@ const CategoryPage: Page = () => {
                 const { data } = await axios.post('/api/projects', {
                     name: inputEl.current?.value,
                     public: false,
-                    category: id as string
+                    category: id as string,
+                    owner: user?.sub
                 })
                 const project = data.data;
                 store.databaseStore.projects.addModel(project);
@@ -47,7 +50,7 @@ const CategoryPage: Page = () => {
     useEffect(() => {
         setId(router.query.id)
         if (!id) {
-            router.push('/');
+            router.push('/dashboard');
         }
     }, [router, id])
 
@@ -82,6 +85,10 @@ const CategoryPage: Page = () => {
         </div>
     )
 }
+
+export const getServerSideProps = withPageAuthRequired({
+    returnTo: '/dashboard'
+})
 
 
 // TODO: STORE PROJECTS AND CATEGORIES IN STORE!!!

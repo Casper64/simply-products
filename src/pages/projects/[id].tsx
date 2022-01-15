@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import Home from '@/pages/index'
+import Home from '@/pages/dashboard'
 import { Page } from 'types'
 import { useRouter } from 'next/router'
 import store, { ContextMenuCallback, FileTreeStore } from '@/store'
@@ -13,6 +13,7 @@ import { GetServerSidePropsContext } from 'next/types'
 import { observer } from 'mobx-react'
 import MarkdownPreview from '@/components/MarkdownPreview'
 import MarkdownEditor from '@/components/MarkdownEditor'
+import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0'
 
 interface ProjectPageProps {
     projects: Project[];
@@ -60,36 +61,43 @@ const ProjectPage: Page<ProjectPageProps> = observer(({ projects, documents }) =
     )
 })
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-    await dbConnect();
+export const  getServerSideProps = withPageAuthRequired({
+    returnTo: '/dashboard',
+    async getServerSideProps (context: GetServerSidePropsContext) {
+        await dbConnect();
 
-    //@ts-ignore
-    const id: string = context.params.id;
+        let s  = getSession(context.req, context.res);
+        const owner: string = s?.user.sub;
 
-    let result = await ProjectModel.find({});
-    let projects = result.map((doc) => {
-        const project = doc.toObject()
-        project._id = project._id.toString();
-        project.category = project.category.toString();
-        return project
-    }) as Project[]
-    
-    let result2 = await DocumentModel.find({
-        project: id
-    })
-    let documents = result2.map((doc) => {
-        const document = doc.toObject()
-        document._id = document._id.toString();
-        document.parent = document.parent.toString();
-        return document
-    }) as Document[]
+        //@ts-ignore
+        const id: string = context.params.id;
 
-    return {
-        props: {
-            projects,
-            documents
+        let result = await ProjectModel.find({owner});
+        let projects = result.map((doc) => {
+            const project = doc.toObject()
+            project._id = project._id.toString();
+            project.category = project.category.toString();
+            return project
+        }) as Project[]
+        
+        let result2 = await DocumentModel.find({
+            project: id,
+            owner
+        })
+        let documents = result2.map((doc) => {
+            const document = doc.toObject()
+            document._id = document._id.toString();
+            document.parent = document.parent.toString();
+            return document
+        }) as Document[]
+
+        return {
+            props: {
+                projects,
+                documents
+            }
         }
     }
-}
+})
 
 export default ProjectPage

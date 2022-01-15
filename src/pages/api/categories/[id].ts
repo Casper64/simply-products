@@ -1,9 +1,17 @@
 import dbConnect from 'lib/dbConnect'
 import Category from 'models/Category'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { withApiAuthRequired, getSession } from '@auth0/nextjs-auth0'
 
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+    let s  = getSession(req, res);
+    const owner: string = s?.user.sub;
+    if (!owner) {
+        res.status(400).json({ success: false, message: "User id is invalid!"});
+        return
+    }
+
     const {
         query: { id },
         method
@@ -13,7 +21,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     switch(method) {
         case 'GET': /* Get a model by its ID */
             try {
-                const category = await Category.findById(id)
+                const category = await Category.findOne({_id: id, owner})
                 if (!category) {
                     return res.status(400).json({ success: false })
                 }
@@ -25,7 +33,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         case 'PUT': /* Edit a model by its ID */
             try {
-                const category = await Category.findByIdAndUpdate(id, req.body, {
+                const category = await Category.findOneAndUpdate({_id: id, owner}, req.body, {
                     new: true,
                     runValidators: true
                 })
@@ -54,4 +62,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 }
 
-export default handler
+export default withApiAuthRequired(handler)

@@ -1,9 +1,17 @@
 import dbConnect from 'lib/dbConnect'
 import Document from 'models/Document'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { withApiAuthRequired, getSession } from '@auth0/nextjs-auth0'
 
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+    let s  = getSession(req, res);
+    const owner: string = s?.user.sub;
+    if (!owner) {
+        res.status(400).json({ success: false, message: "User id is invalid!"});
+        return
+    }
+
     const {
         query: { id },
         method
@@ -13,9 +21,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     switch(method) {
         case 'GET': /* Get a model by its ID */
             try {
-                const document = await Document.findById(id)
+                const document = await Document.findOne({_id: id, owner})
                 if (!document) {
-                    return res.status(400).json({ success: false })
+                    return res.status(400).json({ success: false, message: "Document doesn't exist or you have no access to this project" })
                 }
                 res.status(200).json({ success: true, data: document })
             } catch (error) {
@@ -24,9 +32,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             break
         case 'POST': /* Get a document by its Project ID */
             try {
-                const documents = await Document.find({project: id})
+                const documents = await Document.find({project: id, owner})
                 if (!documents) {
-                    return res.status(400).json({ success: false })
+                    return res.status(400).json({ success: false, message: "Project doesn't exist or you have no access to this project" })
                 }
                 res.status(200).json({ success: true, data: documents })
             } catch (error) {
@@ -36,9 +44,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         case 'PUT': /* Edit a model by its ID */
             try {
-                const document = await Document.findByIdAndUpdate(id, req.body, {
+                const document = await Document.findOneAndUpdate({_id: id, owner}, req.body, {
                     new: true,
-                    runValidators: true
+                    runValidators: true,
                 })
                 if (!document) {
                     return res.status(400).json({ success: false })
@@ -51,7 +59,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         case 'DELETE': /* Delete a model by its ID */
             try {
-                const deletedDocument = await Document.deleteOne({ _id: id })
+                const deletedDocument = await Document.deleteOne({ _id: id, owner })
                 if (!deletedDocument) {
                     return res.status(400).json({ success: false })
                 }
@@ -67,4 +75,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 }
 
-export default handler
+export default withApiAuthRequired(handler)

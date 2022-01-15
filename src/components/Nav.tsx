@@ -7,18 +7,30 @@ export const Nav: React.FC = () => {
     return (
         <nav className="normal-nav">
             <div className="nav-message">
-                <Link href="/">
-                    <a>Welcome { user?.nickname }</a>
-                </Link>
+                <Link href="/">Home</Link>
             </div>
            
             <div className="nav-items">
-                <div className="nav-item">
-                    <Link href="/">Home</Link>
-                </div>
-                <div className="nav-item">
-                    <Link href="/settings">Settings</Link>
-                </div>
+                { user && (
+                <>
+                    <div className="nav-item">
+                        <Link href="/dashboard">Dashboard</Link>
+                    </div>
+                    <div className="nav-item">
+                        <Link href="/settings">Settings</Link>
+                    </div>
+                    <div className="nav-item">
+                        <Link href="/api/auth/logout">Log out</Link>
+                    </div>
+                </>
+                ) }
+                { !user && (
+                <>
+                    <div className="nav-item">
+                        <Link href="/api/auth/login?returnTo=%2Fdashboard">Log in</Link>
+                    </div>
+                </>
+                )}
             </div>
         </nav>
     )

@@ -628,6 +628,7 @@ nav .nav-items .nav-item a {
     border: 1px solid black;
     cursor: pointer;
     color: var(--text);
+    z-index: 9998;
 }
 
 .context-menu p {

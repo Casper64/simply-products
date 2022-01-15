@@ -14,6 +14,7 @@ import { Document } from 'models/Document';
 import { Project } from 'models/Project';
 import Img from '@/components/Img'
 import axios from 'axios';
+import { useUser } from '@auth0/nextjs-auth0';
 
 interface FolderProps {
     className: string;
@@ -40,6 +41,7 @@ export const Folder: React.FC<FolderProps> = observer((props) => {
         setRename
         //@ts-ignore
     } = useContextMenu({store: store.fileTreeStore, document: root});
+    const { user } = useUser();
 
 
     const nextLayer = (documents: Document[]) => {
@@ -109,7 +111,8 @@ export const Folder: React.FC<FolderProps> = observer((props) => {
             folder,
             parent: root._id,
             project: project._id,
-            code: '# Hello world'
+            code: '# Hello world',
+            owner: user?.sub
         });
         const doc = data.data;
         if (doc.folder === false) store.fileTreeStore.setSelected(doc);

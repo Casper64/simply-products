@@ -8,6 +8,7 @@ import Img from '@/components/Img'
 import FolderClosed from "~/assets/folder.svg"
 import FolderOpen from "~/assets/folder-open.svg"
 import axios from 'axios';
+import { useUser } from '@auth0/nextjs-auth0';
 
 
 export const Sidebar: React.FC = () => {
@@ -16,11 +17,12 @@ export const Sidebar: React.FC = () => {
     const [add, setAdd] = useState(false);
     const inputEl = useRef(null as HTMLInputElement | null);
     const router = useRouter();
+    const { user } = useUser();
 
     const goto = (category: Category) => {
         router.push(
-            `/category/${category.name}?id=${category._id}`,
-            `/category/${category.name}`,
+            `/dashboard/category/${category.name}?id=${category._id}`,
+            `/dashboard/category/${category.name}`,
             {
                 shallow: true
             }
@@ -36,6 +38,7 @@ export const Sidebar: React.FC = () => {
                 const { data } = await axios.post('/api/categories', {
                     name: inputEl.current?.value,
                     public: false,
+                    owner: user?.sub
                 })
                 const category = data.data;
                 store.databaseStore.categories.addModel(category);
