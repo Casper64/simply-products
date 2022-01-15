@@ -33,11 +33,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         case 'PUT': /* Edit a model by its ID */
             try {
+                console.log(id, owner, req.body)
                 const category = await Category.findOneAndUpdate({_id: id, owner}, req.body, {
                     new: true,
                     runValidators: true
                 })
-                if (!document) {
+                if (!category) {
                     return res.status(400).json({ success: false })
                 }
                 res.status(200).json({ success: true, data: category })

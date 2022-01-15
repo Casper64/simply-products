@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import Home from '@/pages/dashboard'
 import { Page } from 'types'
 import { useRouter } from 'next/router'
-import store, { ContextMenuCallback, FileTreeStore } from '@/store'
+import store from '@/store'
 import dbConnect from 'lib/dbConnect'
 import ProjectModel, { Project } from 'models/Project'
 import DocumentModel, { Document } from 'models/Document'
@@ -14,6 +13,7 @@ import { observer } from 'mobx-react'
 import MarkdownPreview from '@/components/MarkdownPreview'
 import MarkdownEditor from '@/components/MarkdownEditor'
 import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0'
+import ProjectNav from '@/components/ProjectNav'
 
 interface ProjectPageProps {
     projects: Project[];
@@ -25,6 +25,7 @@ const ProjectPage: Page<ProjectPageProps> = observer(({ projects, documents }) =
     const router = useRouter();
     const [id, setId] = useState(router.query.id);
     const [project, setProject] = useState(projects?.find(p => p._id === id));
+    const [layout, setLayout] = useState('split');
     
     const selected = store.fileTreeStore.selected;
 
@@ -33,6 +34,18 @@ const ProjectPage: Page<ProjectPageProps> = observer(({ projects, documents }) =
         setProject(projects?.find(p => p._id === id))
         if (documents) store.fileTreeStore.documents.setModels(documents);
     }, [router, id, project])
+
+    useEffect(() => {
+        store.addEventListener('editor-layout', setLayout);
+        return () => {
+            store.removeEventListener('editor-layout', setLayout);
+        }
+    })
+    useEffect(() => {
+        if (layout === 'settings' && selected !== null) {
+            setLayout('split')
+        }
+    }, [selected, layout])
     
     return (
         <div className="project-page">
@@ -41,20 +54,34 @@ const ProjectPage: Page<ProjectPageProps> = observer(({ projects, documents }) =
                     <p>EXPLORER</p>
                     {/* Implement Rights display */}
                     <p className="rights">owner</p> 
-                    <div className="settings-icon">
+                    <div className="settings-icon" onClick={() => {
+                        store.fileTreeStore.setSelected(null);
+                        setLayout('settings');
+                    }}>
                         <Img src={Cog.src} alt="cog"/>
                     </div>
                 </div>
                 <FileTree project={project}/>
             </div>
-            <nav></nav>
-            <div className={`markdown-container ${selected ? '' : 'no-selected'}`}>
-                { selected === null && <h1 className="title">Select or create a file to get started!</h1> }
-                { selected !== null && 
+            <ProjectNav></ProjectNav>
+            <div className={`markdown-container ${selected ? '' : 'no-selected'} layout-${layout}`}>
+                { selected === null && layout !== 'settings' && 
+                    <h1 className="title">Select or create a file to get started!</h1>
+                }
+                { selected !== null && layout !== 'settings' && 
                 <>
-                    <MarkdownEditor selected={selected}/>
-                    <MarkdownPreview selected={selected}/>
+                    { (layout === 'split' || layout === 'code') &&
+                        <MarkdownEditor selected={selected}/>
+                    }
+                    { (layout === 'split' || layout === 'preview') &&
+                        <MarkdownPreview selected={selected}/>
+                    }
                 </>	
+                }
+                { selected === null && layout === 'settings' &&
+                    <div className="settings-container">
+                        <h1>Settings</h1>
+                    </div>
                 }
             </div>
         </div>

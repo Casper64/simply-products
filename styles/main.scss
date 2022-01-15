@@ -61,6 +61,7 @@ html {
     --selected-hover: #2C313A;
     --nested-border: #585858;
     --table-second: var(--selected-hover);
+    --text-inactive: #a8adb5;
 }
 
 h1,
@@ -93,6 +94,10 @@ button:focus,
 textarea:focus,
 select:focus {
     outline: none;
+}
+
+input[type="checkbox"] {
+    margin: 0px;
 }
 
 a {
@@ -207,10 +212,61 @@ a {
     position: relative;
     width: fit-content;
     font-size: 1rem;
+
+    &.danger, &.error {
+        background-color: var(--error);
+    }
 }
 
 .btn:active {
     box-shadow: inset 0 0.6em 2em -0.3em rgba(0, 0, 0, 0.15), inset 0 0 0em 0.05em rgba(255, 255, 255, 0.12);
+}
+
+.react-switch-checkbox {
+    height: 0;
+    width: 0;
+    visibility: hidden;
+}
+  
+.react-switch-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    width: 60px;
+    height: 30px;
+    background: grey;
+    border-radius: 60px;
+    position: absolute;
+    top: 0;
+    transition: background-color .2s;
+}
+  
+.react-switch-label .react-switch-button {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 25px;
+    height: 25px;
+    border-radius: 25px;
+    transition: 0.3s;
+    background: #fff;
+    box-shadow: 0 0 2px 0 rgba(10, 10, 10, 0.29);
+}
+  
+.react-switch-checkbox:checked + .react-switch-label .react-switch-button {
+    left: calc(100% - 2px);
+    transform: translateX(-100%);
+}
+  
+.react-switch-label:active .react-switch-button {
+    width: 35px;
+}
+
+.switch-container {
+    height: 30px;
+    position: relative;
 }
 
 nav.normal-nav {
@@ -218,7 +274,7 @@ nav.normal-nav {
     display: grid;
     align-items: center;
     justify-items: start;
-    grid-template-columns: auto auto;
+    grid-template-columns: auto 1fr auto;
     height: 80px;
     gap: 20px;
     box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.08);
@@ -227,6 +283,16 @@ nav.normal-nav {
     left: 0;
     color: var(--color);
     z-index: 10;
+}
+
+nav .center-items {
+    justify-self: center;
+    .theme-toggler {
+        display: grid;
+        grid-template-columns: auto 60px auto;
+        align-items: center;
+        gap: 20px;
+    }
 }
 
 nav .nav-message {
@@ -268,6 +334,7 @@ nav .nav-items .nav-item a {
     font-size: 20px;
     color: inherit;
 }
+
 
 .title {
     font-size: 32px;
@@ -356,35 +423,52 @@ nav .nav-items .nav-item a {
     }
 }
 
-
-
 .projects-display {
     padding: 50px 100px;
-    max-width: 1100px;
+    max-width: min(1100px, 100%);
     width: 100%;
-    height: 100%;
+    overflow-y: auto;
     margin-left: auto;
     margin-right: auto;
     display: grid;
-    grid-template-rows: repeat(2, min-content);
+    grid-template-columns: repeat(auto-fill, minmax(300px, 70%) minmax(250px, 30%));
+    grid-auto-rows: min-content;
     grid-gap: 20px;
+    align-self: flex-start;
+
+    & > .title {
+        grid-column: span 2;
+    }
 }
 
-.projects-list {
+.card {
     background-color: var(--selected-ui);
     border-radius: 5px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
     width: 100%;
     padding: 5px;
     display: grid;
-    
-
     .header {
         height: 40px;
         width: 100%;
         line-height: 40px;
         font-weight: bold;
         padding: 0px 10px;
+    }
+}
+
+.projects-list {
+    display: grid;
+    grid-template-rows: auto 1fr;
+
+    .projects-list-container {
+        display: grid;
+        height: 100%;
+
+        .project.add {
+            align-self: flex-end;
+            color: var(--white);
+        }
     }
 }
 
@@ -426,6 +510,35 @@ nav .nav-items .nav-item a {
         margin: 5px auto;
     }
 }
+
+.danger-zone {
+    border: 1px solid rgba(248,81,73,0.4);
+    box-shadow: 0px 0px 10px rgba(246, 40, 13, 0.2);
+    color: var(--error);
+
+    .danger-container {
+        display: grid;
+        gap: 20px;
+        padding: 20px;   
+
+        .btn {
+            width: 100%;
+        }
+    }
+
+    input {
+        border: 1px solid rgba(248,81,73,0.4);
+        padding: 5px;
+    }
+
+    .verify, .label {
+        color: var(--text);
+        .not-correct {
+            color: var(--inactive-text);
+        }
+    }
+}
+
 
 .project-page {
     display: grid;
@@ -677,6 +790,7 @@ nav .nav-items .nav-item a {
     overflow: auto;
     padding: 20px;
     position: relative;
+    width: 100%;
 }
 
 
@@ -705,4 +819,66 @@ nav .nav-items .nav-item a {
     border: unset;
     border-radius: unset;
     background-color: unset;
+}
+
+.markdown-nav {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    padding: 0 25px;
+    background-color: var(--plain-ui);
+    width: 100%;
+    height: 100%;
+
+    // .nav-item {
+    //     width: 40px;
+    //     height: 40px;
+    // }
+}
+
+.markdown-nav .spacer {
+    flex-grow: 1;
+}
+
+
+.nav-item.layout-split {
+    border: 2px solid var(--nested-border);
+    border-radius: 5px;
+    display: grid;
+    grid-template-columns: 30px 2px 30px;
+    align-items: center;
+    justify-items: center;
+    cursor: pointer;
+    transition: ease 0.2s;
+}
+
+.nav-item.layout-split:hover {
+    background-color: var(--selected-hover);
+}
+
+.nav-item svg {
+    width: 35px;
+    height: 35px;
+    padding: 5px;
+    fill: var(--text);
+}
+
+.nav-item.layout-split .border {
+    background-color: var(--nested-border);
+    height: 100%;
+    width: 2px;
+}
+
+.nav-item.layout-single {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    border: 2px solid var(--nested-border);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: ease 0.2s;
+}
+
+.nav-item.nav-item.layout-single:hover {
+    background-color: var(--selected-hover);
 }

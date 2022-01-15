@@ -15,9 +15,6 @@ interface HomePageProps {
 }
 
 const Home: Page<HomePageProps> = ({ children, categories, projects, user }) => {
-    
-    if (categories) store.databaseStore.categories.setModels(categories);
-    if (projects) store.databaseStore.projects.setModels(projects);
 
     useEffect(() => {
         if (categories) store.databaseStore.categories.setModels(categories);

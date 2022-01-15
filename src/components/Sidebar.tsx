@@ -9,9 +9,10 @@ import FolderClosed from "~/assets/folder.svg"
 import FolderOpen from "~/assets/folder-open.svg"
 import axios from 'axios';
 import { useUser } from '@auth0/nextjs-auth0';
+import { observer } from 'mobx-react';
 
 
-export const Sidebar: React.FC = () => {
+export const Sidebar: React.FC = observer(() => {
     const categories = store.databaseStore.categories.models;
     const [selected, setSelected] = useState(0);
     const [add, setAdd] = useState(false);
@@ -89,4 +90,4 @@ export const Sidebar: React.FC = () => {
             </div>
         </div>
     )
-}
+})

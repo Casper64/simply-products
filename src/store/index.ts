@@ -56,14 +56,46 @@ export class ModelHandler<T extends Document> {
     }
 }
 
+interface EventCallback {
+    name: string;
+    callback: Function;
+}
+
 class RootStore {
     public fileTreeStore: FileTreeStore;
     public databaseStore: DatabaseStore;
+
+    public darkMode = false;
+
+    private callbacks: EventCallback[] = [];
 
     constructor() {
         makeAutoObservable(this);
         this.fileTreeStore = new FileTreeStore({contextMenuCallback: () => null });
         this.databaseStore = new DatabaseStore();
+    }
+
+    @action
+    setDarkMode(val: boolean) {
+        this.darkMode = val;
+    }
+
+    @action
+    addEventListener(name: string, callback: Function) {
+        this.callbacks.push({name, callback});
+    }
+    @action
+    removeEventListener(name: string, callback: Function) {
+        const index = this.callbacks.findIndex(c => {
+            return c.name === name && c.callback.toString() === callback.toString()
+        })
+        if (index != -1)  {
+            this.callbacks.splice(index, 1);
+        }
+    }
+    @action dispatchEvent(name: string, ...args: any) {
+        const callbacks = this.callbacks.filter(c => c.name === name);
+        callbacks.forEach(c => c.callback(...args));
     }
 }
 const store = new RootStore();
