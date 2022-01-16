@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from 'react'
 import { useState } from 'react'
 import store from '@/store'
 import { Category } from 'models/Category';
-import Img from '@/components/Img'
+import Img from '@/components/ui/Img'
 
 import FolderClosed from "~/assets/folder.svg"
 import FolderOpen from "~/assets/folder-open.svg"

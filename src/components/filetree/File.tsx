@@ -5,7 +5,7 @@ import store from '@/store';
 import { observer } from 'mobx-react-lite';
 
 import FileImage from "~/assets/file.svg";
-import Img from '@/components/Img'
+import Img from '@/components/ui/Img'
 
 interface FileProps {
     step: number;

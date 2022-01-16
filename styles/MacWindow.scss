@@ -1,0 +1,53 @@
+
+.mac-window {
+    border-radius: 7px;
+    overflow: hidden;
+    border: 1px solid #e2e2e2;
+    max-height: 100%;
+
+    &.dark {
+        border: 1px solid #273138;
+    }
+
+    &.dark .outer {
+        background: rgba(39, 49, 56, 0.7);
+    }
+
+    .outer {
+            width: 100%;
+            padding: 10px;
+            background: rgba(226, 226, 226, 0.7); 
+            backdrop-filter: blur(4px);
+            height: 40px;
+        }
+    
+    .dot {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        background: #f4f4f4;
+        border-radius: 50%;
+        margin: 0 4px 0 0;
+        
+        &.red {
+            background: #FF6057;
+            border: 1px solid #E14640;
+        }
+    
+        &.amber {
+            background: #FFBD2E;
+            border: 1px solid #DFA123;
+        }
+    
+        &.green {
+            background: #27C93F;
+            border: 1px solid #1DAD2B;
+        }
+    }
+
+    .container {
+        height: calc(100% - 40px);
+        width: 100%;
+        overflow: auto;
+    }
+}

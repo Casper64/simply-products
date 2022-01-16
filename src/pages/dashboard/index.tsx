@@ -1,7 +1,7 @@
 import dbConnect from 'lib/dbConnect'
 import CategoryModel, { Category } from 'models/Category'
 import ProjectModel, { Project } from 'models/Project'
-import { Sidebar } from '@/components/Sidebar'
+import { Sidebar } from '@/components/ui/Sidebar'
 import { useEffect } from 'react'
 import { Page } from 'types'
 import store from '@/store'
@@ -22,7 +22,7 @@ const Home: Page<HomePageProps> = ({ children, categories, projects, user }) => 
     }, [categories, projects])
 
     return (
-        <div className="home">
+        <div className="dashboard">
             <Sidebar/>
             <section className="category-container">
                 { children }

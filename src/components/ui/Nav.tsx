@@ -1,28 +1,26 @@
 import { useUser } from '@auth0/nextjs-auth0';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link'
-import Switch from './ui/Switch';
+import Switch from './Switch';
 import { useDarkMode } from '@/hooks/theme';
+import { useRouter } from 'next/router';
+import ReactDOM from 'react-dom';
 
 export const Nav: React.FC = () => {
     const { user } = useUser();
     const { theme, toggle } = useDarkMode();
+    const router = useRouter();
+    let [rendered, setRendered] = useState(false);
+    useEffect(() => {
+        setRendered(true)
+    })
+
     return (
-        <nav className="normal-nav">
+        <>
+        <nav className={`normal-nav ${router.pathname === '/' ? 'home-nav' : ''}`}>
             <div className="nav-message">
                 <Link href="/">Home</Link>
             </div>
-           <div className="center-items">
-               <div className="theme-toggler">
-                   <p>Light</p>
-                   <Switch 
-                        handleToggle={toggle} 
-                        isOn={Boolean(theme === 'dark')} 
-                        onColor="var(--primary)"
-                    />
-                   <p>Dark</p>
-               </div>
-           </div>
             <div className="nav-items">
                 { user && (
                 <>
@@ -46,5 +44,19 @@ export const Nav: React.FC = () => {
                 )}
             </div>
         </nav>
+        { rendered && ReactDOM.createPortal((
+            <div className={`theme-switch-container ${router.pathname === '/' ? 'home' : ''}`} style={{
+                left: router.pathname.match(/\/projects/g) ? '300px' : ''
+            }}>
+                <p>theme</p>
+                <Switch 
+                    handleToggle={toggle} 
+                    isOn={Boolean(theme === 'dark')} 
+                    onColor="var(--primary)"
+                />
+            </div>
+        ), document.body) 
+        }
+        </>
     )
 }

@@ -1,7 +1,7 @@
 import { Project } from 'models/Project'
 import Link from 'next/link'
 import React from 'react'
-import Img from '@/components/Img'
+import Img from '@/components/ui/Img'
 
 import FolderClosed from "~/assets/folder.svg"
 

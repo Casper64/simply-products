@@ -12,7 +12,7 @@ import store from '@/store';
 import { observer } from 'mobx-react-lite';
 import { Document } from 'models/Document';
 import { Project } from 'models/Project';
-import Img from '@/components/Img'
+import Img from '@/components/ui/Img'
 import axios from 'axios';
 import { useUser } from '@auth0/nextjs-auth0';
 

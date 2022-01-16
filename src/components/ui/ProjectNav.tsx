@@ -1,5 +1,5 @@
 import React from 'react'
-import UseSVG from '@/components/UseSvg'
+import UseSVG from '@/components/ui/UseSvg'
 import store from '@/store'
 
 import Image from 'assets/image.svg'
@@ -9,26 +9,6 @@ import Document from 'assets/document.svg'
 import Download from 'assets/download.svg'
 import axios from 'axios'
 import { observer } from 'mobx-react'
-
-function base64ToArrayBuffer(base64: string) {
-    var binaryString = window.atob(base64);
-    var binaryLen = binaryString.length;
-    var bytes = new Uint8Array(binaryLen);
-    for (var i = 0; i < binaryLen; i++) {
-       var ascii = binaryString.charCodeAt(i);
-       bytes[i] = ascii;
-    }
-    return bytes;
- }
-
-function saveByteArray(reportName: string, byte: any) {
-    var blob = new Blob([byte], {type: "application/pdf"});
-    var link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    var fileName = reportName;
-    link.download = fileName;
-    link.click();
-};
 
 const ProjectNav: React.FC = observer(() => {
     const selected = store.fileTreeStore.selected;
@@ -46,9 +26,6 @@ const ProjectNav: React.FC = observer(() => {
         document.body.append(element);
         element.click();
         element.remove();
-        // saveByteArray(selected.name+'.pdf', data)
-        // const urlString = `data:application/pdf;base64,${btoa(unescape(encodeURIComponent(data)))}`;
-        
     }
 
     return (

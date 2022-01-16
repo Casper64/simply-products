@@ -32,11 +32,11 @@
 }
 .markdown-previewer::-webkit-scrollbar-track {
     border-radius: 10px;
-    background: #e5e5e5;
+    background: transparent;
 }
 .markdown-previewer::-webkit-scrollbar-thumb{
     border-radius: 10px;
-    background: rgba(0,0,0,0.2);
+    background: rgba(0,0,0,0.1);
 }
 
 .markdown-previewer img {

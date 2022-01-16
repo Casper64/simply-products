@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { Folder } from "@/components/Folder";
+import { Folder } from "@/components/filetree/Folder";
 
 import store, { ContextMenuCallback } from "@/store"
 import { Project } from "~/models/Project";

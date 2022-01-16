@@ -7,9 +7,11 @@ import { Document } from "~/models/Document";
 
 interface markdownEditorProps {
     selected: Document;
+    preview?: boolean;
+    onChange?: any;
 }
 
-const MarkdownEditor: React.FC<markdownEditorProps> = observer(({ selected }) => {
+const MarkdownEditor: React.FC<markdownEditorProps> = observer(({ selected, preview, onChange }) => {
     const [typed, setTyped] = useState(false);
     const [lastTyped, setLastTyped] = useState(0);
     const [source, setSource] = useState(selected.code);
@@ -30,8 +32,13 @@ const MarkdownEditor: React.FC<markdownEditorProps> = observer(({ selected }) =>
         if (typed && lastTyped != 0 && Date.now()-lastTyped >= 500) {
             setTyped(false);
             setLastTyped(0);
-            store.fileTreeStore.setCode(textArea.current?.value || '')
-            axios.put(`/api/documents/${selected._id}`, selected)
+            if (!preview) {
+                store.fileTreeStore.setCode(textArea.current?.value || '')
+                axios.put(`/api/documents/${selected._id}`, selected)
+            }
+            else {
+                onChange({...selected, code: textArea.current?.value || ''})
+            }
         }
     }
 

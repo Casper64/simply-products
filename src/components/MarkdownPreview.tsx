@@ -15,7 +15,7 @@ const fetcher = (url: string) => axios.get(url).then(res => res.data);
 
 const MarkdownPreview: React.FC<MarkdownPreviewProps> = observer(({ selected }) => {
     let container: HTMLElement | null = null;
-    const source = store.fileTreeStore.selected?.code || '';
+    const source = selected.code || store.fileTreeStore.selected?.code || '';
     const line = store.fileTreeStore.lineObj;
     let [hovering, setHovering] = useState(false);
     
