@@ -315,7 +315,7 @@ export function updateResult(source: string) {
     matches.forEach(matchObj => {
         let match = matchObj[0];
     //@ts-ignore
-        let stripped = match.replaceAll("\n", "\\newline ");
+        let stripped = match.replaceAll("\n", " ");
         source = source.replace(regex, stripped);
     });
     source = source.replace(/(\\begin\{align\*?\}.*?\\end{align})/gms, "$1"+stringTimes("\n", matches.length))
@@ -324,7 +324,7 @@ export function updateResult(source: string) {
     matches.forEach(matchObj => {
         let match = matchObj[0];
     //@ts-ignore
-        let stripped = match.replaceAll("\n", "\\newline ");
+        let stripped = match.replaceAll("\n", " ");
         source = source.replace(match, stripped)
     });
     source = source.replace(/(\\begin\{align\*?\}.*?\\end{align})/gms, "$1"+stringTimes("\n", matches.length));
