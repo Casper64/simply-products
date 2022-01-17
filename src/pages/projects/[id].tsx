@@ -51,14 +51,14 @@ const ProjectPage: Page<ProjectPageProps> = observer(({ projects, documents }) =
         setId(router.query.id)
         setProject(projects?.find(p => p._id === id))
         if (documents) store.fileTreeStore.documents.setModels(documents);
-    }, [router, id, project])
+    }, [router, id, project, documents, projects])
 
     useEffect(() => {
         store.addEventListener('editor-layout', setLayout);
         return () => {
             store.removeEventListener('editor-layout', setLayout);
         }
-    })
+    }, [])
     useEffect(() => {
         if (layout === 'settings' && selected !== null) {
             setLayout('split')

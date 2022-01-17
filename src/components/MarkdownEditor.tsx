@@ -45,7 +45,7 @@ const MarkdownEditor: React.FC<markdownEditorProps> = observer(({ selected, prev
     useEffect(() => {
         const int = setInterval(interval, 500);
         return () => clearInterval(int);
-    }, [typed, lastTyped]);
+    }, [typed, lastTyped, interval]);
     useEffect(() => {
          if (selected) {
             setSource(selected.code);

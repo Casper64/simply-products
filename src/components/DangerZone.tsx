@@ -54,11 +54,12 @@ function DangerZone<T extends anyObject>(props: DangerZoneProps<T>) {
                     <p className="label">Hit enter to rename</p>
                 ) }
                 { remove.on &&  remove.type === "model" && (
-                    <p className="verify">Type "
+                    <p className="verify">Type &#34;
                         <span className={inputState === model?.name ? 'correct' : 'not-correct'}>
                             { model?.name }
                         </span>
-                    " and press enter to delete</p>
+                        &#34; and press enter to delete
+                    </p>
                 ) }
                 { remove.on && <input 
                     ref={inputDanger} 

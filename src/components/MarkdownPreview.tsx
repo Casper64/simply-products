@@ -63,7 +63,7 @@ const MarkdownPreview: React.FC<MarkdownPreviewProps> = observer(({ selected }) 
 
     useEffect(() => {
         renderToHTML();
-    }, [source])
+    }, [source, renderToHTML])
 
     useEffect(() => {
         if (line.src !== 1 && container !== null) {
@@ -106,7 +106,7 @@ const MarkdownPreview: React.FC<MarkdownPreviewProps> = observer(({ selected }) 
                 behavior: 'smooth'
             });
         }
-    }, [line])
+    }, [line, container])
 
     return (
         <div className="markdown-previewer" ref={setPreview} onScroll={syncScroll} 

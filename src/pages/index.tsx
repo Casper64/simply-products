@@ -43,7 +43,7 @@ const IndexPage: React.FC = observer(() => {
                     <div className="text-container" ref={t1}>
                         <h1>Simply Notes</h1>
                         <h2>Make and export notes easily</h2>
-                        <Link href={user ? '/dashboard':'/api/auth/login?returnTo=%2Fdashboard'}>
+                        <Link href={user ? '/dashboard':'/api/auth/login?returnTo=%2Fdashboard'} passHref>
                             <p className="action-link">
                                 Get <span className="spacer"> </span>Started
                             </p>
@@ -65,8 +65,8 @@ const IndexPage: React.FC = observer(() => {
                     </div> }
                     <div className="text-container">
                         <h1>Markdown &amp; Latex</h1>
-                        <h2>Use markdown and Latex's math syntax</h2>
-                        <Link href={user ? '/dashboard':'/api/auth/login?returnTo=%2Fdashboard'}>
+                        <h2>Use markdown and Latex&#39;s math syntax</h2>
+                        <Link href={user ? '/dashboard':'/api/auth/login?returnTo=%2Fdashboard'} passHref>
                             <p className="action-link">
                                 Get <span className="spacer"> </span>Started
                             </p>

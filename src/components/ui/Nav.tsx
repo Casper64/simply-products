@@ -13,7 +13,7 @@ export const Nav: React.FC = () => {
     let [rendered, setRendered] = useState(false);
     useEffect(() => {
         setRendered(true)
-    })
+    }, [setRendered])
 
     return (
         <>

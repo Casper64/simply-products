@@ -180,7 +180,6 @@ export const Folder: React.FC<FolderProps> = observer((props) => {
 
     const selectDocument = async () => {
         setOpen(!open);
-        // TODO: select document callback
     }
 
     return (
