@@ -11,9 +11,15 @@ export const Nav: React.FC = () => {
     const { theme, toggle } = useDarkMode();
     const router = useRouter();
     let [rendered, setRendered] = useState(false);
+    let [returnTo, setReturnTo] = useState('')
+
     useEffect(() => {
         setRendered(true)
     }, [setRendered])
+
+    useEffect(() => {
+        setReturnTo(encodeURIComponent(window.location.origin+'/dashboard'))
+    })
 
     return (
         <>
@@ -31,14 +37,14 @@ export const Nav: React.FC = () => {
                         <Link href="/settings">Settings</Link>
                     </div> */}
                     <div className="nav-item">
-                        <Link href="/api/auth/logout">Log out</Link>
+                        <Link href={`/api/auth/logout?returnTo=${returnTo}`}>Log out</Link>
                     </div>
                 </>
                 ) }
                 { !user && (
                 <>
                     <div className="nav-item">
-                        <Link href="/api/auth/login?returnTo=%2Fdashboard">Log in</Link>
+                        <Link href={`/api/auth/login?returnTo=${returnTo}`}>Log in</Link>
                     </div>
                 </>
                 )}
