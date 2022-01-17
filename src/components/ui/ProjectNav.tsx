@@ -9,9 +9,11 @@ import Document from 'assets/document.svg'
 import Download from 'assets/download.svg'
 import axios from 'axios'
 import { observer } from 'mobx-react'
+import { useMobile } from '@/hooks/isMobile'
 
 const ProjectNav: React.FC = observer(() => {
     const selected = store.fileTreeStore.selected;
+    const { mobile } = useMobile();
 
     const download = async () => {
         if (!selected) return
@@ -47,12 +49,12 @@ const ProjectNav: React.FC = observer(() => {
                 onClick={() => store.dispatchEvent('editor-layout', 'preview')}>
                 <UseSVG xlinkHref={Document.src}/>
             </div>
-            <div className="nav-item layout-split" title="layout split"
+            { !mobile && <div className="nav-item layout-split" title="layout split"
                 onClick={() => store.dispatchEvent('editor-layout', 'split')}>
                 <UseSVG xlinkHref={Code.src}/>
                 <div className="border"></div>
                 <UseSVG xlinkHref={Document.src}/>
-            </div>
+            </div> }
             <div className="spacer"></div>
             <div className="nav-item layout-single" title="download"
                 onClick={download}>

@@ -8,6 +8,7 @@ import MacWindow from '@/components/MacWindow'
 import store from '@/store'
 import { observer } from 'mobx-react'
 import MarkdownEditor from '@/components/MarkdownEditor'
+import { useMobile } from '@/hooks/isMobile'
 
 const IndexPage: React.FC = observer(() => {
     const { user } = useUser();
@@ -16,8 +17,10 @@ const IndexPage: React.FC = observer(() => {
     const t1 = useRef(null) as React.MutableRefObject<null | HTMLDivElement>
     const t2 = useRef(null) as React.MutableRefObject<null | HTMLDivElement>
     const [example, setExample] = useState({code: "# Hello world\n\nYou can edit me...", parent: '', folder: false, owner: ''} as Document);
+    const { mobile } = useMobile();
 
     const scrolling = (event: any) => {
+        if (mobile) return
         let el = document.querySelector('html');
         //@ts-ignore
         let percentage = (el?.scrollTop % window.innerHeight) / window.innerHeight;
@@ -36,7 +39,7 @@ const IndexPage: React.FC = observer(() => {
         <div className="index-page" >
             <div className="landing">
                 <div className="top"></div>
-                <div className="left-side-container">
+                <div className="left side-container">
                     <div className="text-container" ref={t1}>
                         <h1>Simply Notes</h1>
                         <h2>Make and export notes easily</h2>
@@ -46,20 +49,20 @@ const IndexPage: React.FC = observer(() => {
                             </p>
                         </Link>
                     </div>
-                    <div className="markdown-edit-preview" ref={t2}>
+                    { !mobile && <div className="markdown-edit-preview" ref={t2}>
                         <MacWindow darkMode={store.darkMode}>
                             <MarkdownEditor selected={example} onChange={setExample} preview/>
                         </MacWindow>
-                    </div>
+                    </div> }
                     <div className="s-logo"><p  ref={s1}>S</p></div>
                 </div>
-                <div className="right-side-container">
+                <div className="right side-container">
                     <div className="s-logo"><p  ref={s2}>S</p></div>
-                    <div className="markdown-preview">
+                    { !mobile && <div className="markdown-preview">
                         <MacWindow darkMode={store.darkMode}>
                             <MarkdownPreview selected={example}/>
                         </MacWindow>
-                    </div>
+                    </div> }
                     <div className="text-container">
                         <h1>Markdown &amp; Latex</h1>
                         <h2>Use markdown and Latex's math syntax</h2>
@@ -71,9 +74,24 @@ const IndexPage: React.FC = observer(() => {
                     </div>
                 </div>
             </div>
-            {/* <div className="landing-preview">
-
-            </div> */}
+            <div className="landing-preview">
+                <div className="right-text">
+                    <h3>Try it</h3>
+                </div>
+                <div className="container">
+                    <div className="markdown-edit-preview preview" >
+                        <MacWindow darkMode={store.darkMode}>
+                            <MarkdownEditor selected={example} onChange={setExample} preview/>
+                        </MacWindow>
+                    </div> 
+                    <div className="markdown-preview preview">
+                        <MacWindow darkMode={store.darkMode}>
+                            <MarkdownPreview selected={example}/>
+                        </MacWindow>
+                    </div>
+                </div>
+                
+            </div>
         </div>
     )
 })

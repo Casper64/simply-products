@@ -16,6 +16,7 @@ import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0'
 import ProjectNav from '@/components/ui/ProjectNav'
 import DangerZone from '@/components/DangerZone'
 import axios from 'axios'
+import { useMobile } from '@/hooks/isMobile'
 
 interface ProjectPageProps {
     projects: Project[];
@@ -23,11 +24,11 @@ interface ProjectPageProps {
 }
 
 const ProjectPage: Page<ProjectPageProps> = observer(({ projects, documents }) => {
-
+    const { mobile } = useMobile();
     const router = useRouter();
     const [id, setId] = useState(router.query.id);
     const [project, setProject] = useState(projects?.find(p => p._id === id));
-    const [layout, setLayout] = useState('split');
+    const [layout, setLayout] = useState(mobile ? 'code' : 'split');
     
     const selected = store.fileTreeStore.selected;
 
@@ -63,6 +64,11 @@ const ProjectPage: Page<ProjectPageProps> = observer(({ projects, documents }) =
             setLayout('split')
         }
     }, [selected, layout])
+    useEffect(() => {
+        if (mobile && layout === 'split') {
+            setLayout('code')
+        }
+    }, [mobile, layout])
     
     return (
         <div className="project-page">
@@ -108,6 +114,7 @@ const ProjectPage: Page<ProjectPageProps> = observer(({ projects, documents }) =
                             delete={deleteProject}
                             rename={renameProject}/>
                     </div>
+                    
                 }
             </div>
         </div>

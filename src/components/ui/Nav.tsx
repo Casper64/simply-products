@@ -50,7 +50,7 @@ export const Nav: React.FC = () => {
             }}>
                 <p>theme</p>
                 <Switch 
-                    handleToggle={toggle} 
+                    handleToggle={() => toggle()} 
                     isOn={Boolean(theme === 'dark')} 
                     onColor="var(--primary)"
                 />

@@ -1,5 +1,7 @@
 // @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
+$mobile: 760px;
+
 body,
 html {
     margin: 0;
@@ -75,6 +77,7 @@ html {
 
 h1,
 h2,
+h3,
 p {
     margin: 0;
 }
@@ -284,10 +287,9 @@ nav.normal-nav {
     display: grid;
     align-items: center;
     justify-items: start;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: auto 1fr;
     height: 80px;
     gap: 20px;
-    // box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.08);
     width: 100vw;
     top: 0;
     left: 0;
@@ -297,6 +299,13 @@ nav.normal-nav {
     &.home-nav {
         background-color: transparent;
         position: fixed;
+    }
+
+    @media only screen and (max-width: $mobile) {
+        .nav-items {
+            padding: 0px;
+            width: 100%;
+        }
     }
 }
 
@@ -393,6 +402,18 @@ nav .nav-items .nav-item a {
         height: 20px;
         background-color: var(--selected-ui);
     }
+
+    @media only screen and (max-width: $mobile) {
+        width: 100%;
+        left: 0 !important;
+        grid-template-columns: repeat(2, min-content);
+        justify-content: center;
+        border-radius: 0px;
+
+        &::after, &::before {
+          content: unset;
+        }
+    }
 }
 
 .title {
@@ -406,6 +427,12 @@ nav .nav-items .nav-item a {
     align-items: center;
     justify-items: center;
     border-top-left-radius: 35px;
+    max-height: 100%;
+    overflow: hidden;
+
+    @media only screen and (max-width: $mobile) {
+        border-radius: 35px;
+    }
 }
 
 .layout-default {
@@ -415,7 +442,14 @@ nav .nav-items .nav-item a {
 
 .dashboard {
     display: grid;
-    grid-template-columns: 200px 1fr;
+    grid-template-columns: 200px 1fr 50px;
+    height: calc(100vh - 80px);
+    background-color: var(--selected-ui);
+
+    @media only screen and (max-width: $mobile) {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr 50px;
+    }
 }
 
 .sidebar {
@@ -494,10 +528,20 @@ nav .nav-items .nav-item a {
     grid-auto-rows: min-content;
     grid-gap: 20px;
     align-self: flex-start;
+    height: 100%;
 
     & > .title {
         grid-column: span 2;
         text-align: center;
+    }
+
+    @media only screen and (max-width: $mobile) {
+        grid-template-columns: 1fr;
+        padding: 50px 25px;
+
+        & > .title {
+            grid-column: unset;
+        }
     }
 }
 
@@ -619,6 +663,34 @@ nav .nav-items .nav-item a {
         align-items: center;
         justify-items: center;
         background-color: var(--plain-ui);
+    }
+
+    @media only screen and (max-width: $mobile) {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto 1fr 50px;
+        // height: calc(100vh - 80px);
+
+        .folder-container {
+            grid-row: unset;
+            padding-bottom: 10px;
+        }
+
+        .markdown-container {
+            overflow: hidden;
+            max-height: 100%;
+            padding: 0;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            & > * {
+                height: 100%;
+            }
+
+            & > .title {
+                height: min-content;
+                padding: 45px;
+                text-align: center;
+            }
+        }
     }
 }
 
@@ -906,6 +978,11 @@ nav .nav-items .nav-item a {
     //     width: 40px;
     //     height: 40px;
     // }
+
+    @media only screen and (max-width: $mobile) {
+        height: 50px;
+        border-top-right-radius: 35px;;
+    }
 }
 
 .markdown-nav .spacer {
@@ -959,14 +1036,19 @@ nav .nav-items .nav-item a {
     background-color: var(--selected-ui);
     display: grid;
     align-items: center;
-    justify-items: center;
+    justify-items: flex-start;
     grid-auto-rows: 100vh;
+
+    @media only screen and (max-width: $mobile) {
+        grid-template-rows: 100vh auto;
+    }
 }
 
 .landing {
     height: 100%;
+    width: 100%;
     display: grid;
-    grid-template-columns: 1fr 0px 1fr;
+    grid-template-columns: 1fr 1fr;
     grid-template-rows: 80px 1fr;
     position: relative;
     z-index: 3;
@@ -974,6 +1056,15 @@ nav .nav-items .nav-item a {
     .top {
         background-color: var(--selected-ui);
         grid-column: span 3;
+    }
+
+    @media only screen and (max-width: $mobile) {
+        grid-template-columns: 1fr;
+        grid-template-rows: 80px 1fr 1fr;
+
+        .top {
+            grid-column: span 1;
+        }
     }
 }
 
@@ -995,9 +1086,15 @@ nav .nav-items .nav-item a {
             font-size: 22.5vw;
         }
     }
+
+    @media only screen and (max-width: $mobile) {
+        p {
+            font-size: 144px;
+        }
+    }
 }
 
-.left-side-container {
+.left.side-container {
     width: 50vw;
     justify-self: flex-end;
     text-align: right;
@@ -1011,6 +1108,7 @@ nav .nav-items .nav-item a {
         margin-right: 20vw;
         text-align: left;
         z-index: 11;
+        height: min-content;
 
         h1 {
             font-size: 44px;
@@ -1041,6 +1139,14 @@ nav .nav-items .nav-item a {
             }
         }
     }
+
+    @media only screen and (max-width: $mobile) {
+        .s-logo {
+            bottom: -87.5px;
+            clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%);
+            animation: slide-right 0.3s ease-out forwards;
+        }
+    }
 }
 
 .action-link {
@@ -1052,6 +1158,7 @@ nav .nav-items .nav-item a {
     transform-origin: 0% 50%;
     transition: font-size 0.3s ease;
     font-size: 16px;
+    width: min-content;
 
     &:hover {
         font-size: 19px;
@@ -1066,7 +1173,7 @@ nav .nav-items .nav-item a {
     }
 }
 
-.right-side-container {
+.right.side-container {
     width: 60vw;
     height: 100%;
     background-color: var(--plain-ui);
@@ -1086,6 +1193,7 @@ nav .nav-items .nav-item a {
         margin-top: 60vh;
         margin-left: 20vw;
         z-index: 11;
+        height: min-content;
 
         h1 {
             font-size: 44px;
@@ -1107,6 +1215,38 @@ nav .nav-items .nav-item a {
             padding: 0 45px;
         }
     }
+
+    @media only screen and (max-width: $mobile) {
+        transform: translateX(0);
+        clip-path: none;
+
+        .s-logo {
+            top: -87.5px;
+            clip-path: polygon(0 50%, 100% 50%, 100% 100%, 0 100%);
+            animation: slide-left 0.3s ease-out forwards;
+        }
+    }
+}
+
+.side-container {
+    @media only screen and (max-width: $mobile) {
+        width: 100% !important;
+
+        .text-container {
+            margin: auto !important;
+            padding: 20px;
+            height: min-content;
+            text-align: center;
+        }
+
+        .s-logo {
+            width: 100%;
+            height: 175px;
+            text-align: center;
+            right: 0 !important;
+            left: 0 !important;
+        }
+    }
 }
 
 @keyframes slide-down {
@@ -1125,10 +1265,94 @@ nav .nav-items .nav-item a {
         transform: translateY(0);
     }
 }
+@keyframes slide-right {
+    0% {
+        transform: translateX(-50%) ;
+    }
+    100% {
+        transform: translateY(0) ;
+    }
+}
+@keyframes slide-left {
+    0% {
+        transform: translateX(50%);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
 
 .landing-preview {
-    width: 100%;
+    width: 100vw;
     height: 100%;
+    min-height: 100vh;
     background-color: var(--plain-ui);
     z-index: 2;
+    display: grid;
+    grid-template-rows: 215px 1fr;
+
+    .right-text {
+        display: grid;
+        align-items: center; 
+
+        h3 {
+            height: min-content;
+            width: auto;
+            font-size: 44px;
+            text-align: right;
+            padding-right: 20vw;
+        }
+    }
+    
+    & > .container {
+        display: grid;
+        max-width: min(1366px, 100%);
+        margin: auto;
+        width: 100%;
+        grid-template-columns: 1fr 1fr;
+        max-height: 100%;
+        padding: 45px;
+        gap: 45px;
+    }
+    
+
+    .preview {
+        height: 400px;
+
+        .mac-window .container {
+            overflow: hidden;
+            .markdown-editor {
+                height: 360px;
+            }
+        }
+    }
+
+    @media only screen and (max-width: $mobile) {
+        grid-template-rows: 130px 1fr;
+        height: auto;
+
+        .right-text {
+            align-items: flex-end;
+            h3 {
+                padding: 0;
+                text-align: center;
+            }
+        }
+
+        & > .container {
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr 1fr;
+        }
+
+        .preview {
+            height: 256px;
+
+            .mac-window .container {
+                overflow: hidden;
+                .markdown-editor {
+                    height: 216px;
+                }
+            }
+        }
+    }
 }

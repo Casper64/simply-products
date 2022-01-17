@@ -56,7 +56,6 @@ const MarkdownPreview: React.FC<MarkdownPreviewProps> = observer(({ selected }) 
                         line: n,
                         src: 1
                     })
-                    console.log(n)
                     return
                 }
             }
@@ -68,7 +67,6 @@ const MarkdownPreview: React.FC<MarkdownPreviewProps> = observer(({ selected }) 
 
     useEffect(() => {
         if (line.src !== 1 && container !== null) {
-            console.log(line.line)
             if (line.line === -1) {
                 container.scroll({
                     top: 0,
