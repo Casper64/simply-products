@@ -1,3 +1,4 @@
+import { useMobile } from "@/hooks/isMobile";
 import store from "@/store";
 import axios from "axios";
 import { observable } from "mobx";
@@ -20,6 +21,7 @@ const MarkdownEditor: React.FC<markdownEditorProps> = observer(({ selected, prev
     const lineHeight = 25;
     const line = store.fileTreeStore.lineObj;
     let [hovering, setHovering] = useState(false);
+    const { mobile } = useMobile();
 
     const keyUp: React.KeyboardEventHandler<HTMLTextAreaElement> =  () => {
         if (!typed){
@@ -57,8 +59,11 @@ const MarkdownEditor: React.FC<markdownEditorProps> = observer(({ selected, prev
         textArea.current.style.height = "unset";
         const scrollHeight = textArea.current.scrollHeight;
         textArea.current.style.height = scrollHeight + "px";
-	//@ts-ignore
-	textArea.current.parentElement.style.height = scrollHeight + "px";
+        if (mobile || (mobile && preview)) {
+            //@ts-ignore
+            textArea.current.parentElement.style.height = scrollHeight + "px";
+        }
+        
 	
     }, [source, textArea])
 
