@@ -52,10 +52,14 @@ const MarkdownEditor: React.FC<markdownEditorProps> = observer(({ selected, prev
         }
     }, [selected]);
     useEffect(() => {
+	
         if (textArea.current == null) return;
         textArea.current.style.height = "unset";
         const scrollHeight = textArea.current.scrollHeight;
         textArea.current.style.height = scrollHeight + "px";
+	//@ts-ignore
+	textArea.current.parentElement.style.height = scrollHeight + "px";
+	
     }, [source, textArea])
 
     const handleTab: React.KeyboardEventHandler<HTMLTextAreaElement> = (event) => {

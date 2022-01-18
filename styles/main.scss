@@ -681,8 +681,8 @@ nav .nav-items .nav-item a {
             padding: 0;
             border-bottom-left-radius: 20px;
             border-bottom-right-radius: 20px;
-            & > * {
-                height: 100%;
+            .markdown-previewer {
+                height: fit-content;
             }
 
             & > .title {
@@ -962,6 +962,11 @@ nav .nav-items .nav-item a {
     border-radius: unset;
     background-color: unset;
     color: inherit;
+
+    @media only screen and(max-width: $mobile) {
+        max-height: 100%;
+	padding-bottom: 50px;
+    }
 }
 
 .markdown-nav {
