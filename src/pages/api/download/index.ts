@@ -49,7 +49,7 @@ const handler: NextApiHandler = async (req, res) => {
     doc = String.raw`${doc}`;
     await page.goto("https://google.com")
     await page.setContent(doc, { waitUntil: 'networkidle0' });
-    const path = resolve("./.next/static/media/out.pdf")
+    const path = resolve("./public/out.pdf")
     const pdf = await page.pdf({
         path,
         format: 'a4',
@@ -64,7 +64,7 @@ const handler: NextApiHandler = async (req, res) => {
     await browser.close();
     
 
-    res.send("/_next/static/media/out.pdf");
+    res.send("/out.pdf");
 
     // res.setHeader('Content-Type', 'application/pdf')
     // res.setHeader('Content-Length', pdf.length)
