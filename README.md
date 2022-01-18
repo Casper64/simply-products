@@ -1,4 +1,24 @@
-# Simply Notes
+# Simply Notes 
+![Artboard 1@128](https://user-images.githubusercontent.com/43839798/149987223-c0418506-8a43-4119-9e59-f778a6debbac.png)
+
+Make and export notes easily with Simply-notes, visit the [website](https://notes.casperswebsites.com) to Get Started.
+
+- Make Notes in markdown
+- Katex included for writing math expressions
+- Free + easy to use
+- Export your notes to PDF
+- Structured overview of your notes
+- Progressive Web App!
+
+
+
+## Images
+![https   www notes casperswebsites com](https://user-images.githubusercontent.com/43839798/149987140-1e9788e5-8454-487e-a0a9-e1f84ea8b5e6.png)
+![https   notes casperswebsites com projects 61e324ce133bc61a034092f4](https://user-images.githubusercontent.com/43839798/150003765-3c1dabc9-f3e1-40fd-9f1c-3b43b9d27809.png)
+
+
+
+## Info
 
 newer version of my [old simple-notes website](https://github.com/Casper64/simply-notes/tree/simply-notes-legacy) for making notes with markdown
 
@@ -14,7 +34,7 @@ npm run dev
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result (or port 4000 depending on package.json command).
 
 You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
 
