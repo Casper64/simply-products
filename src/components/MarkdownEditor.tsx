@@ -63,8 +63,6 @@ const MarkdownEditor: React.FC<markdownEditorProps> = observer(({ selected, prev
             //@ts-ignore
             textArea.current.parentElement.style.height = scrollHeight + "px";
         }
-        
-	
     }, [source, textArea, mobile, preview])
 
     const handleTab: React.KeyboardEventHandler<HTMLTextAreaElement> = (event) => {
