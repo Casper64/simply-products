@@ -10,7 +10,7 @@ html {
     min-height: 100vh;
     background-color: var(--selected-ui);
     @media only screen and (max-width: $mobile) {
-        padding-bottom: env(safe-area-inset-bottom, 20px);
+        padding-bottom: 20px;
     }
 }
 
@@ -409,7 +409,7 @@ nav .nav-items .nav-item a {
     }
 
     @media only screen and (max-width: $mobile) {
-        padding-bottom: env(safe-area-inset-bottom, 20px);
+        padding-bottom: 20px;
         height: 70px;
         width: 100%;
         left: 0 !important;
@@ -457,7 +457,7 @@ nav .nav-items .nav-item a {
     @media only screen and (max-width: $mobile) {
         grid-template-columns: 1fr;
         grid-template-rows: auto 1fr 50px;
-        padding-bottom: env(safe-area-inset-bottom, 20px);
+        padding-bottom: 20px;
     }
 }
 
@@ -677,7 +677,7 @@ nav .nav-items .nav-item a {
     @media only screen and (max-width: $mobile) {
         grid-template-columns: 1fr;
         grid-template-rows: auto auto 1fr 50px;
-        padding-bottom: env(safe-area-inset-bottom, 20px);
+        padding-bottom: 20px;
         // height: calc(100vh - 80px);
 
         .folder-container {
