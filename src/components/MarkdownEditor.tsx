@@ -59,13 +59,13 @@ const MarkdownEditor: React.FC<markdownEditorProps> = observer(({ selected, prev
         textArea.current.style.height = "unset";
         const scrollHeight = textArea.current.scrollHeight;
         textArea.current.style.height = scrollHeight + "px";
-        if (mobile || (mobile && preview)) {
+        if (mobile && !preview) {
             //@ts-ignore
             textArea.current.parentElement.style.height = scrollHeight + "px";
         }
         
 	
-    }, [source, textArea])
+    }, [source, textArea, mobile, preview])
 
     const handleTab: React.KeyboardEventHandler<HTMLTextAreaElement> = (event) => {
         if (event.key !== "Tab" || textArea.current == null) {
