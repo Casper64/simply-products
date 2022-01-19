@@ -63,8 +63,8 @@ export class FileTreeStore {
     }
 
     @action
-    public setCode(code: string) {
-        if (this.selected) this.selected.code = code;
+    public setSource(source: any) {
+        if (this.selected) this.selected.source = source;
     }
 
     @action

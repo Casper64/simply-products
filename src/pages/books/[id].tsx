@@ -10,25 +10,22 @@ import Img from '@/components/ui/Img'
 import Cog from '~/assets/cog.svg'
 import { GetServerSidePropsContext } from 'next/types'
 import { observer } from 'mobx-react'
-import MarkdownPreview from '@/components/MarkdownPreview'
-import MarkdownEditor from '@/components/MarkdownEditor'
 import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0'
-import ProjectNav from '@/components/ui/ProjectNav'
 import DangerZone from '@/components/DangerZone'
 import axios from 'axios'
-import { useMobile } from '@/hooks/isMobile'
+import Editor from '@/components/Editor'
+import ProjectNav from '@/components/ui/ProjectNav'
 
 interface ProjectPageProps {
-    projects: Project[];
+    project: Project;
     documents: Document[];
 }
 
-const ProjectPage: Page<ProjectPageProps> = observer(({ projects, documents }) => {
-    const { mobile } = useMobile();
+const ProjectPage: Page<ProjectPageProps> = observer(({ project: p, documents }) => {
     const router = useRouter();
     const [id, setId] = useState(router.query.id);
-    const [project, setProject] = useState(projects?.find(p => p._id === id));
-    const [layout, setLayout] = useState(mobile ? 'code' : 'split');
+    const [layout, setLayout] = useState('code');
+    const [project, setProject] = useState(p);
     
     const selected = store.fileTreeStore.selected;
 
@@ -45,13 +42,13 @@ const ProjectPage: Page<ProjectPageProps> = observer(({ projects, documents }) =
         } as Project
         await axios.put(`/api/projects/${project?._id}`, p)
         store.databaseStore.projects.updateModel(p)
+        setProject(p);
     }
 
     useEffect(() => {
         setId(router.query.id)
-        setProject(projects?.find(p => p._id === id))
         if (documents) store.fileTreeStore.documents.setModels(documents);
-    }, [router, id, project, documents, projects])
+    }, [router, id, project, documents])
 
     useEffect(() => {
         store.addEventListener('editor-layout', setLayout);
@@ -59,16 +56,6 @@ const ProjectPage: Page<ProjectPageProps> = observer(({ projects, documents }) =
             store.removeEventListener('editor-layout', setLayout);
         }
     }, [])
-    useEffect(() => {
-        if (layout === 'settings' && selected !== null) {
-            setLayout('split')
-        }
-    }, [selected, layout])
-    useEffect(() => {
-        if (mobile && layout === 'split') {
-            setLayout('code')
-        }
-    }, [mobile, layout])
     
     return (
         <div className="project-page">
@@ -91,15 +78,8 @@ const ProjectPage: Page<ProjectPageProps> = observer(({ projects, documents }) =
                 { selected === null && layout !== 'settings' && 
                     <h1 className="title">Select or create a file to get started!</h1>
                 }
-                { selected !== null && layout !== 'settings' && 
-                <>
-                    { (layout === 'split' || layout === 'code') &&
-                        <MarkdownEditor selected={selected}/>
-                    }
-                    { (layout === 'split' || layout === 'preview') &&
-                        <MarkdownPreview selected={selected}/>
-                    }
-                </>	
+                { selected !== null && layout !== 'settings' && id &&
+                    <Editor selected={selected}/>
                 }
                 { selected === null && layout === 'settings' &&
                     <div className="settings-display">
@@ -132,13 +112,13 @@ export const  getServerSideProps = withPageAuthRequired({
         //@ts-ignore
         const id: string = context.params.id;
 
-        let result = await ProjectModel.find({owner});
-        let projects = result.map((doc) => {
+        let result = await ProjectModel.find({owner, _id: id});
+        let project = result.map((doc) => {
             const project = doc.toObject()
             project._id = project._id.toString();
-            project.category = project.category.toString();
             return project
-        }) as Project[]
+        })[0] as Project | null
+
         
         let result2 = await DocumentModel.find({
             project: id,
@@ -153,7 +133,7 @@ export const  getServerSideProps = withPageAuthRequired({
 
         return {
             props: {
-                projects,
+                project,
                 documents
             }
         }

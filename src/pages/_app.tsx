@@ -1,8 +1,7 @@
 import { UserProvider } from '@auth0/nextjs-auth0';
 import "styles/main.scss"
 import "styles/markdown.scss"
-import "styles/atom-one-light.min.css"
-import "styles/MacWindow.scss"
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 import { MyAppProps } from 'types';
 import { ReactNode } from 'react';

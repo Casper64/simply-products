@@ -1,13 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { useUser } from '@auth0/nextjs-auth0'
-import Image from 'next/image'
-import MarkdownPreview from '@/components/MarkdownPreview'
-import { Document } from '~/models/Document'
-import MacWindow from '@/components/MacWindow'
-import store from '@/store'
 import { observer } from 'mobx-react'
-import MarkdownEditor from '@/components/MarkdownEditor'
 import { useMobile } from '@/hooks/isMobile'
 
 const IndexPage: React.FC = observer(() => {
@@ -16,7 +10,6 @@ const IndexPage: React.FC = observer(() => {
     const s2 = useRef(null) as React.MutableRefObject<null | HTMLParagraphElement>
     const t1 = useRef(null) as React.MutableRefObject<null | HTMLDivElement>
     const t2 = useRef(null) as React.MutableRefObject<null | HTMLDivElement>
-    const [example, setExample] = useState({code: "# Hello world\n\nYou can edit me...", parent: '', folder: false, owner: ''} as Document);
     const { mobile } = useMobile();
 
     const scrolling = (event: any) => {
@@ -41,8 +34,8 @@ const IndexPage: React.FC = observer(() => {
                 <div className="top"></div>
                 <div className="left side-container">
                     <div className="text-container" ref={t1}>
-                        <h1>Simply Notes</h1>
-                        <h2>Make and export notes easily</h2>
+                        <h1>Simply Writer</h1>
+                        <h2>Make and export books easily</h2>
                         <Link href={user ? '/dashboard':'/api/auth/login?returnTo=%2Fdashboard'} passHref>
                             <p className="action-link">
                                 Get <span className="spacer"> </span>Started
@@ -50,22 +43,18 @@ const IndexPage: React.FC = observer(() => {
                         </Link>
                     </div>
                     { !mobile && <div className="markdown-edit-preview" ref={t2}>
-                        <MacWindow darkMode={store.darkMode}>
-                            <MarkdownEditor selected={example} onChange={setExample} preview/>
-                        </MacWindow>
+
                     </div> }
                     <div className="s-logo"><p  ref={s1}>S</p></div>
                 </div>
                 <div className="right side-container">
                     <div className="s-logo"><p  ref={s2}>S</p></div>
                     { !mobile && <div className="markdown-preview">
-                        <MacWindow darkMode={store.darkMode}>
-                            <MarkdownPreview selected={example}/>
-                        </MacWindow>
+ 
                     </div> }
                     <div className="text-container">
-                        <h1>Markdown &amp; Latex</h1>
-                        <h2>Use markdown and Latex&#39;s math syntax</h2>
+                        <h1>Markdown</h1>
+                        <h2>Use markdown</h2>
                         <Link href={user ? '/dashboard':'/api/auth/login?returnTo=%2Fdashboard'} passHref>
                             <p className="action-link">
                                 Get <span className="spacer"> </span>Started
@@ -79,18 +68,8 @@ const IndexPage: React.FC = observer(() => {
                     <h3>Try it</h3>
                 </div>
                 <div className="container">
-                    <div className="markdown-edit-preview preview" >
-                        <MacWindow darkMode={store.darkMode}>
-                            <MarkdownEditor selected={example} onChange={setExample} preview/>
-                        </MacWindow>
-                    </div> 
-                    <div className="markdown-preview preview">
-                        <MacWindow darkMode={store.darkMode}>
-                            <MarkdownPreview selected={example}/>
-                        </MacWindow>
-                    </div>
+
                 </div>
-                
             </div>
         </div>
     )

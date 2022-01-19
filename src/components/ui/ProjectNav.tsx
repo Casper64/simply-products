@@ -37,24 +37,11 @@ const ProjectNav: React.FC = observer(() => {
                 <UseSVG xlinkHref={Image.src}/>
             </div>
             <div className="spacer"></div>
-            {/* <div className="nav-item layout-single" title="save"
-                onClick={() => store.dispatchEvent('markdown-nav:images')}>
+            <div className="nav-item layout-single" title="save"
+                onClick={() => store.dispatchEvent('markdown-nav:save')}>
                 <UseSVG xlinkHref={Save.src}/>
-            </div> */}
-            <div className="nav-item layout-single" title="layout code"
-                onClick={() => store.dispatchEvent('editor-layout', 'code')}>
-                <UseSVG xlinkHref={Code.src}/>
             </div>
-            <div className="nav-item layout-single" title="layout preview"
-                onClick={() => store.dispatchEvent('editor-layout', 'preview')}>
-                <UseSVG xlinkHref={Document.src}/>
-            </div>
-            { !mobile && <div className="nav-item layout-split" title="layout split"
-                onClick={() => store.dispatchEvent('editor-layout', 'split')}>
-                <UseSVG xlinkHref={Code.src}/>
-                <div className="border"></div>
-                <UseSVG xlinkHref={Document.src}/>
-            </div> }
+            
             <div className="spacer"></div>
             <div className="nav-item layout-single" title="download"
                 onClick={download}>

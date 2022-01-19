@@ -11,7 +11,7 @@ interface ProjectProps {
 
 const Project: React.FC<ProjectProps> = (props) => {
     return (
-        <Link passHref href={`/projects/${props.project._id}`}>
+        <Link passHref href={`/books/${props.project._id}`}>
             <div className="project with-icon">
                 <Img className="img folder-closed" src={FolderClosed.src}
                     alt="folder-closed"/>

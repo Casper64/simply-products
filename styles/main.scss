@@ -366,7 +366,7 @@ nav .nav-items .nav-item a {
 .theme-switch-container {
     position: fixed;
     bottom: 0;
-    left: 200px;
+    left: 35px;
     height: 50px;
     padding: 0px 10px;
     background-color: var(--selected-ui);
@@ -433,12 +433,13 @@ nav .nav-items .nav-item a {
     background-color:var(--plain-ui);
     align-items: center;
     justify-items: center;
-    border-top-left-radius: 35px;
+    border-radius: 35px;
     max-height: 100%;
     overflow: hidden;
+    margin: 35px;
 
     @media only screen and (max-width: $mobile) {
-        border-radius: 35px;
+        margin: 0;
     }
 }
 
@@ -449,14 +450,14 @@ nav .nav-items .nav-item a {
 
 .dashboard {
     display: grid;
-    grid-template-columns: 200px 1fr 50px;
+    grid-template-columns: 1fr;
     height: calc(100vh - 80px);
     background-color: var(--selected-ui);
     
 
     @media only screen and (max-width: $mobile) {
         grid-template-columns: 1fr;
-        grid-template-rows: auto 1fr 50px;
+        grid-template-rows: 1fr 50px;
         padding-bottom: 20px;
     }
 }
@@ -538,6 +539,10 @@ nav .nav-items .nav-item a {
     grid-gap: 20px;
     align-self: flex-start;
     height: 100%;
+
+    &.settings-dashboard {
+        grid-template-columns: 1fr;
+    }
 
     & > .title {
         grid-column: span 2;
@@ -661,6 +666,20 @@ nav .nav-items .nav-item a {
     grid-template-columns: 300px 1fr;
     grid-template-rows: 60px 1fr;
     background-color: var(--selected-ui);
+    height: calc(100vh - 80px);
+
+    .editor-wrapper {
+        width: 100%;
+        height: 100%;
+        display: grid;
+        grid-template-rows: auto 1fr;
+        background-color: white;
+        color: black;
+    }
+
+    .editor {
+        padding: 10px;
+    }
 
     .folder-container {
         grid-row: span 2;
@@ -689,8 +708,7 @@ nav .nav-items .nav-item a {
             overflow: hidden;
             max-height: 100%;
             padding: 0;
-            border-bottom-left-radius: 20px;
-            border-bottom-right-radius: 20px;
+
             .markdown-previewer {
                 height: fit-content;
             }
@@ -915,8 +933,6 @@ nav .nav-items .nav-item a {
     grid-template-rows: 1fr;
     grid-template-columns: 1fr 1fr;
     column-gap: 10px;
-    padding-right: 10px;
-    padding-bottom: 10px;
 
     &.layout-code, &.layout-preview, &.no-selected {
         grid-template-columns: 1fr;

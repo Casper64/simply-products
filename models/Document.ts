@@ -5,7 +5,7 @@ export interface Document extends D {
     folder: boolean;
     parent: string;
     project: string;
-    code: string;
+    source: string;
     owner: string;
 }
 
@@ -14,7 +14,7 @@ const DocumentSchema = new mongoose.Schema<Document>({
     folder: Boolean,
     parent: String,
     project: String,
-    code: String,
+    source: String,
     owner: String
 });
 

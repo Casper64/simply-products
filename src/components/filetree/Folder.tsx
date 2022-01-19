@@ -50,7 +50,7 @@ export const Folder: React.FC<FolderProps> = observer((props) => {
             return d.parent === root._id;
         })
         documents.sort(doc => {
-            return doc.folder ? -1 : 1
+            return doc.folder ? 1 : -1
         })
         if (documents!.length > 0) {
             const Content = (
@@ -106,12 +106,14 @@ export const Folder: React.FC<FolderProps> = observer((props) => {
         }
         blurInput();
 
+        const ContentState =  (await import('draft-js')).ContentState
+
         const { data } = await axios.post('/api/documents', {
             name: tempInput.value,
             folder,
             parent: root._id,
             project: project._id,
-            code: '# Hello world',
+            source: null,
             owner: user?.sub
         });
         const doc = data.data;
@@ -129,7 +131,7 @@ export const Folder: React.FC<FolderProps> = observer((props) => {
                     <Img src={FileImage.src} alt="file"/>
                     <input 
                         type="text" 
-                        ref={setTempInput}
+                        ref={(e) => setTempInput(e, true)}
                         onBlur={() => setNewDocument(false)} onKeyUp={(event) => keyUp(event, false) }
                     />
                 </div>
@@ -155,9 +157,17 @@ export const Folder: React.FC<FolderProps> = observer((props) => {
         ]);
     }
 
-    const setTempInput = (element: HTMLInputElement) => {
+    const setTempInput = (element: HTMLInputElement | null, file=false) => {
         if (element === null) return
         tempInput = element;
+        if (file) {
+            if (root._id !== project._id) {
+                tempInput.value = "."+root.name;
+                tempInput.focus();
+                tempInput.setSelectionRange(0, 0);
+                return
+            }
+        }
         tempInput.focus();
     }
 
@@ -206,8 +216,9 @@ export const Folder: React.FC<FolderProps> = observer((props) => {
                     setRename(false)
                     }}
                 />
-                <Img onClick={addFolder} className="add-icon" src={AddFolder.src}
+                { step === 1 && <Img onClick={addFolder} className="add-icon" src={AddFolder.src}
                     alt="add-folder"/>
+                }
                 <Img onClick={addFile} className="add-icon" src={AddFile.src}
                     alt="add-file"/>
             </div>
