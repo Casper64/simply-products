@@ -670,15 +670,23 @@ nav .nav-items .nav-item a {
 
     .editor-wrapper {
         width: 100%;
+        max-width: 980px;
         height: 100%;
         display: grid;
         grid-template-rows: auto 1fr;
         background-color: white;
         color: black;
+
+        .toolbar {
+            position: fixed;
+            z-index: 5;
+            max-width: 980px;
+        }
     }
 
     .editor {
-        padding: 10px;
+        padding: 0 80px;
+        margin-top: 110px;
     }
 
     .folder-container {
@@ -691,6 +699,10 @@ nav .nav-items .nav-item a {
         align-items: center;
         justify-items: center;
         background-color: var(--plain-ui);
+    }
+
+    .markdown-container {
+        overflow: auto;
     }
 
     @media only screen and (max-width: $mobile) {
@@ -718,6 +730,11 @@ nav .nav-items .nav-item a {
                 padding: 45px;
                 text-align: center;
             }
+        }
+
+        .editor {
+            padding: 0 20px;
+            margin-top: 110px;
         }
     }
 }

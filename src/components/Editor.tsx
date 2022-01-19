@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react'
 import dynamic from 'next/dynamic';
-import React, { ComponentType, useEffect, useState } from 'react'
+import React, { ComponentType, useEffect, useRef, useState } from 'react'
 import type { EditorProps } from 'react-draft-wysiwyg';
 import { Document } from '~/models/Document'
 import store from '@/store'
@@ -21,6 +21,7 @@ const EditorWrapper: React.FC<EditorWrapperProps> = ({ selected }) => {
 
     const edit = (state: Draft.DraftModel.Encoding.RawDraftContentState) => {
         setContent(JSON.stringify(state));
+
     }
 
     const save = () => {
@@ -61,6 +62,7 @@ const EditorWrapper: React.FC<EditorWrapperProps> = ({ selected }) => {
         return () => store.removeEventListener('markdown-nav:save', save);
     })
 
+
     return (
         <>
             { EditorComponent && source && 
@@ -71,6 +73,7 @@ const EditorWrapper: React.FC<EditorWrapperProps> = ({ selected }) => {
                 editorClassName="editor"
                 onContentStateChange={edit}
                 onEditorStateChange={setSource}
+                toolbarClassName="toolbar"
             />
             }
         </>
