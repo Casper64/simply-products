@@ -1,6 +1,5 @@
 import dbConnect from 'lib/dbConnect'
 import ProjectModel, { Project } from 'models/Project'
-import { Sidebar } from '@/components/ui/Sidebar'
 import { useEffect } from 'react'
 import { Page } from 'types'
 import store from '@/store'
