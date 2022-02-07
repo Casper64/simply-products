@@ -108,6 +108,9 @@ const ProjectPage: Page<ProjectPageProps> = observer(({ projects, documents }) =
                             <div className="header">
                                 <p>Project</p>
                             </div>
+                            <div className="card-container">
+                                <p>Project share settings coming soon...</p>
+                            </div>
                         </div>
                         <DangerZone 
                             model={project} 

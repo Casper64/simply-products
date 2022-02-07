@@ -11,6 +11,25 @@ interface MarkdownPreviewProps {
     selected: Document;
 }
 
+export const renderToHTML = (container: any, source: string) => {
+    if (container == null) return;
+    const html = updateResult(source);
+    container.innerHTML = html;
+    renderMathInElement(container, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            { left: '$', right: '$', display: false },
+            {left: "\\begin{align}", right: "\\end{align}", display: true},
+        ],
+        macros: {
+            "\\nl": "\\newline"
+        },
+        newLineInDisplayMode: true,
+        output: "html",
+        throwOnError: false
+    })
+}
+
 const fetcher = (url: string) => axios.get(url).then(res => res.data);
 
 const MarkdownPreview: React.FC<MarkdownPreviewProps> = observer(({ selected }) => {
@@ -26,24 +45,7 @@ const MarkdownPreview: React.FC<MarkdownPreviewProps> = observer(({ selected }) 
         container = element
     }
 
-    const renderToHTML = () => {
-        if (container == null) return;
-        const html = updateResult(source);
-        container.innerHTML = html;
-        renderMathInElement(container, {
-            delimiters: [
-                {left: "$$", right: "$$", display: true},
-                { left: '$', right: '$', display: false },
-                {left: "\\begin{align}", right: "\\end{align}", display: true},
-            ],
-            macros: {
-                "\\nl": "\\newline"
-            },
-            newLineInDisplayMode: true,
-            output: "html",
-            throwOnError: false
-        })
-    }
+    
 
     const syncScroll: React.UIEventHandler<HTMLDivElement> = (event) => {
         if (!hovering) return
@@ -62,7 +64,7 @@ const MarkdownPreview: React.FC<MarkdownPreviewProps> = observer(({ selected }) 
     }
 
     useEffect(() => {
-        renderToHTML();
+        renderToHTML(container, source);
     }, [source, renderToHTML])
 
     useEffect(() => {

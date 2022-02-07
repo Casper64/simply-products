@@ -10,6 +10,7 @@ import Download from 'assets/download.svg'
 import axios from 'axios'
 import { observer } from 'mobx-react'
 import { useMobile } from '@/hooks/isMobile'
+import { renderToHTML } from '../MarkdownPreview'
 
 const ProjectNav: React.FC = observer(() => {
     const selected = store.fileTreeStore.selected;
@@ -17,8 +18,14 @@ const ProjectNav: React.FC = observer(() => {
 
     const download = async () => {
         if (!selected) return
-        let el = document.querySelector('.markdown-previewer')!;
-        if (!el) return;
+        let el = document.querySelector('.markdown-previewer');
+        if (!el) {
+            el = document.createElement('div')!;
+            document.body.append(el);
+        }
+
+        renderToHTML(el, selected.code)
+
         let html = el.innerHTML;
 
         const { data } = await axios.post('/api/download', {code: html});
