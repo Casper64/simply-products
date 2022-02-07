@@ -18,7 +18,7 @@ export const Nav: React.FC = () => {
     }, [setRendered])
 
     useEffect(() => {
-        setReturnTo(encodeURIComponent(window.location.origin+'/dashboard'))
+        setReturnTo(encodeURIComponent(window.location.origin))
     })
 
     return (
@@ -37,14 +37,14 @@ export const Nav: React.FC = () => {
                         <Link href="/settings">Settings</Link>
                     </div> */}
                     <div className="nav-item">
-                        <Link href={`/api/auth/logout?returnTo=${encodeURIComponent('/')}`}>Log out</Link>
+                        <Link href={`/api/auth/logout?returnTo=${returnTo}${encodeURIComponent('/')}`}>Log out</Link>
                     </div>
                 </>
                 ) }
                 { !user && (
                 <>
                     <div className="nav-item">
-                        <Link href={`/api/auth/login?returnTo=${encodeURIComponent('/dashboard')}`}>Log in</Link>
+                        <Link href={`/api/auth/login?returnTo=${returnTo}${encodeURIComponent('/dashboard')}`}>Log in</Link>
                     </div>
                 </>
                 )}
