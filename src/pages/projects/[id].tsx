@@ -10,8 +10,7 @@ import Img from '@/components/ui/Img'
 import Cog from '~/assets/cog.svg'
 import { GetServerSidePropsContext } from 'next/types'
 import { observer } from 'mobx-react'
-import MarkdownPreview from '@/components/MarkdownPreview'
-import MarkdownEditor from '@/components/MarkdownEditor'
+import { NoteEditor } from '@/components/MarkdownEditor'
 import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0'
 import ProjectNav from '@/components/ui/ProjectNav'
 import DangerZone from '@/components/DangerZone'
@@ -92,14 +91,7 @@ const ProjectPage: Page<ProjectPageProps> = observer(({ projects, documents }) =
                     <h1 className="title">Select or create a file to get started!</h1>
                 }
                 { selected !== null && layout !== 'settings' && 
-                <>
-                    { (layout === 'split' || layout === 'code') &&
-                        <MarkdownEditor selected={selected}/>
-                    }
-                    { (layout === 'split' || layout === 'preview') &&
-                        <MarkdownPreview selected={selected}/>
-                    }
-                </>	
+                    <NoteEditor note={selected} layout={layout} />
                 }
                 { selected === null && layout === 'settings' &&
                     <div className="settings-display">

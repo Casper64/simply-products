@@ -48,7 +48,6 @@ export const FileTree: React.FC<FileTreeProps> = ({ project }) => {
                 parent: document._id
             })
             store.fileTreeStore.documents.deleteModel(document);
-            console.log(store.fileTreeStore.documents.models)
         }
         if (store.fileTreeStore.selected === document._id) store.fileTreeStore.setSelected(null)
     }

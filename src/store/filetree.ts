@@ -1,3 +1,4 @@
+import axios from "axios";
 import { action, makeAutoObservable } from "mobx"
 import { Document } from "~/models/Document";
 import { ModelHandler } from ".";
@@ -64,7 +65,9 @@ export class FileTreeStore {
 
     @action
     public setCode(code: string) {
-        if (this.selected) this.selected.code = code;
+        if (this.selected) {
+            this.selected.code = code;
+        }
     }
 
     @action
@@ -85,5 +88,15 @@ export class FileTreeStore {
     @action setContextMenu(val: ContextMenuOptions) {
         this.contextMenu = val;
         this.contextMenuCallbackList.forEach(callback => callback(val));
+    }
+
+    @action
+    public save() {
+        for (const doc of this.documents.models) {
+            if (doc.changed) {
+                doc.changed = false;
+                axios.put(`/api/documents/${doc._id}`, doc)
+            }
+        }
     }
 }

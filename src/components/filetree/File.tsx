@@ -6,10 +6,11 @@ import { observer } from 'mobx-react-lite';
 
 import FileImage from "~/assets/file.svg";
 import Img from '@/components/ui/Img'
+import { Document } from "~/models/Document";
 
 interface FileProps {
     step: number;
-    doc: any;
+    doc: Document;
 };
 
 export const File: React.FC<FileProps> = observer((props) => {
@@ -51,6 +52,7 @@ export const File: React.FC<FileProps> = observer((props) => {
                 <Img src={FileImage.src} alt="file"/>
                     <p style={{display: rename ? 'none' : 'block'}}>
                         { doc.name }
+                        <span style={{color: 'gray'}}>{ doc.changed ? ' *' : '' }</span>
                     </p>
                 <input style={{display: rename ? 'block' : 'none'}}
                 //@ts-ignore

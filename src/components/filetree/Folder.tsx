@@ -59,7 +59,6 @@ export const Folder: React.FC<FolderProps> = observer((props) => {
                     { documents.map(d => {
                         if (d.folder) {
                             return <Folder key={d._id} root={d} step={step + 1} className='' project={project}/>
-                            // return <div className="nested-container"></div> 
                         }
                         else {
                             return <File 
@@ -182,6 +181,7 @@ export const Folder: React.FC<FolderProps> = observer((props) => {
         setOpen(!open);
     }
 
+    
     return (
         <Fragment>
             <div className={`${className} folder with-icon ${open ? 'open' : ''} ${forceSelect ? 'selected' : ''}`} 

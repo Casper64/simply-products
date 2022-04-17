@@ -9,7 +9,6 @@ export const useDarkMode = () => {
         setTheme(t);
         window.localStorage.setItem("theme", t);
         store.setDarkMode(Boolean(t === 'dark'));
-        console.log(t, theme)
     }
 
     const watchDarkModeDevice = (event: MediaQueryListEvent) => {

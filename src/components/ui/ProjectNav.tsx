@@ -10,7 +10,6 @@ import Download from 'assets/download.svg'
 import axios from 'axios'
 import { observer } from 'mobx-react'
 import { useMobile } from '@/hooks/isMobile'
-import { renderToHTML } from '../MarkdownPreview'
 
 const ProjectNav: React.FC = observer(() => {
     const selected = store.fileTreeStore.selected;
@@ -18,15 +17,10 @@ const ProjectNav: React.FC = observer(() => {
 
     const download = async () => {
         if (!selected) return
-        let el = document.querySelector('.markdown-previewer');
-        if (!el) {
-            el = document.createElement('div')!;
-            document.body.append(el);
-        }
-
-        renderToHTML(el, selected.code)
-
+        let el = document.querySelector('.markdown-body');
+        if (!el) return
         let html = el.innerHTML;
+        console.log(el, html)
 
         const { data } = await axios.post('/api/download', {code: html});
         const element = document.createElement('a');
@@ -39,15 +33,15 @@ const ProjectNav: React.FC = observer(() => {
 
     return (
         <nav className="markdown-nav">
-            <div className="nav-item layout-single" title="images" 
+            {/* <div className="nav-item layout-single" title="images" 
                 onClick={() => store.dispatchEvent('markdown-nav:images')}>
                 <UseSVG xlinkHref={Image.src}/>
+            </div> */}
+            <div className="nav-item layout-single" title="save"
+                onClick={() => store.fileTreeStore.save()}>
+                <UseSVG xlinkHref={Save.src}/>
             </div>
             <div className="spacer"></div>
-            {/* <div className="nav-item layout-single" title="save"
-                onClick={() => store.dispatchEvent('markdown-nav:images')}>
-                <UseSVG xlinkHref={Save.src}/>
-            </div> */}
             <div className="nav-item layout-single" title="layout code"
                 onClick={() => store.dispatchEvent('editor-layout', 'code')}>
                 <UseSVG xlinkHref={Code.src}/>
