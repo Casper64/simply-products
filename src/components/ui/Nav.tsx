@@ -5,6 +5,7 @@ import Switch from './Switch';
 import { useDarkMode } from '@/hooks/theme';
 import { useRouter } from 'next/router';
 import ReactDOM from 'react-dom';
+import { useMobile } from '@/hooks/isMobile';
 
 export const Nav: React.FC = () => {
     const { user } = useUser();
@@ -12,6 +13,7 @@ export const Nav: React.FC = () => {
     const router = useRouter();
     let [rendered, setRendered] = useState(false);
     let [returnTo, setReturnTo] = useState('')
+    const { mobile } = useMobile()
 
     useEffect(() => {
         setRendered(true)
@@ -24,9 +26,9 @@ export const Nav: React.FC = () => {
     return (
         <>
         <nav className={`normal-nav ${router.pathname === '/' ? 'home-nav' : ''}`}>
-            <div className="nav-message">
+            { !mobile && <div className="nav-message">
                 <Link href="/">Home</Link>
-            </div>
+            </div> }
             <div className="nav-items">
                 { user && (
                 <>

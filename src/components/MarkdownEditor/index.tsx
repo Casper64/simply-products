@@ -37,7 +37,7 @@ export const NoteEditor: FC<NoteEditorProps> = ({ note, layout, onChange }) => {
 
         let height = window.innerHeight - 140;
         if (window.innerWidth < 768) {
-            height = window.innerHeight - 420;
+            height = window.innerHeight - 340;
         }
         setHeight(height)
     }

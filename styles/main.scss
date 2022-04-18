@@ -303,10 +303,19 @@ nav.normal-nav {
     }
 
     @media only screen and (max-width: $mobile) {
+        grid-row: -1;
+        height: 70px;
+        gap:0;
+        
+        background-color: transparent;
+
         .nav-items {
             padding: 0px;
-            width: 100%;
+            width: 100vw;
+            justify-content: space-between;
+            grid-template-columns: unset;
         }
+
     }
 }
 
@@ -358,6 +367,10 @@ nav .nav-items .nav-item a {
     padding: 20px;
     font-size: 20px;
     color: inherit;
+
+    @media only screen and (max-width: $mobile) {
+        padding-top: 0px;
+    }
 }
 
 .theme-switch-container {
@@ -408,11 +421,11 @@ nav .nav-items .nav-item a {
     @media only screen and (max-width: $mobile) {
         padding-bottom: 20px;
         height: 70px;
-        width: 100%;
-        left: 0 !important;
         grid-template-columns: repeat(2, min-content);
         justify-content: center;
         border-radius: 0px;
+        width: 140px;
+        left: calc(50vw - 70px) !important;
 
         &::after, &::before {
           content: unset;
@@ -677,8 +690,7 @@ nav .nav-items .nav-item a {
 
     @media only screen and (max-width: $mobile) {
         grid-template-columns: 1fr;
-        grid-template-rows: auto auto 1fr 50px;
-        padding-bottom: 20px;
+        grid-template-rows: auto auto 1fr;
         // height: calc(100vh - 80px);
 
         .folder-container {
@@ -903,6 +915,7 @@ nav .nav-items .nav-item a {
     display: flex;
     justify-items: center;
     align-items: center;
+    background-color: var(--plain-ui);
 
     .title {
         text-align: center;
