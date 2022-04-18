@@ -455,6 +455,10 @@ nav .nav-items .nav-item a {
 .layout-default {
     display: grid;
     grid-template-rows: auto 1fr;
+
+    @media only screen and (max-width: $mobile) {
+        grid-template-rows: 1fr auto;
+    }
 }
 
 .dashboard {
