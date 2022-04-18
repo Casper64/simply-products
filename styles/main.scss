@@ -426,6 +426,7 @@ nav .nav-items .nav-item a {
         border-radius: 0px;
         width: 140px;
         left: calc(50vw - 70px) !important;
+        background-color: transparent;
 
         &::after, &::before {
           content: unset;
