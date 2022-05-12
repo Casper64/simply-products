@@ -48,13 +48,13 @@ const handler: NextApiHandler = async (req, res) => {
     await page.goto("https://google.com")
     await page.setContent(doc, { waitUntil: 'networkidle0' });
     const path = resolve("./public/out.pdf")
-    const pdf = await page.pdf({
+    await page.pdf({
         path,
         format: 'a4',
         printBackground: true,
         margin: {
-            top: 80,
-            bottom: 80,
+            top: 40,
+            bottom: 40,
             left: 30,
             right: 30
         }

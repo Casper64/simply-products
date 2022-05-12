@@ -38,7 +38,7 @@
     border-radius: 10px;
     background: transparent;
 }
-.markdown-body::-webkit-scrollbar-thumb{
+.markdown-body::-webkit-scrollbar-thumb, .markdown-body pre::-webkit-scrollbar-thumb{
     border-radius: 10px;
     background: rgba(0,0,0,0.1);
 }
