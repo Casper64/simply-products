@@ -25,6 +25,7 @@ export const File: React.FC<FileProps> = observer((props) => {
         setRename
     } = useContextMenu({store: store.fileTreeStore, document: doc});
 
+    // Return element containg the nested borders that visually indicate the depth of the file
     const nestedBorders = () => {
         if (step > 2) {
             return (
@@ -37,7 +38,7 @@ export const File: React.FC<FileProps> = observer((props) => {
         }
         else return 
     }
-
+    // Select the current document
     const selectDocument = async () => {
         store.fileTreeStore.setSelected(doc);
         // TODO: select document callback

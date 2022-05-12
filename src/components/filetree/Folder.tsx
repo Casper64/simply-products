@@ -43,7 +43,7 @@ export const Folder: React.FC<FolderProps> = observer((props) => {
     } = useContextMenu({store: store.fileTreeStore, document: root});
     const { user } = useUser();
 
-
+    // Renders the filetree recursively and returns the node
     const nextLayer = (documents: Document[]) => {
         
         documents = documents.filter((d) => {
@@ -84,6 +84,7 @@ export const Folder: React.FC<FolderProps> = observer((props) => {
         return <div className={`nested-container ${open ? ''  : 'closed'}`}>{ children }</div> 
     }
     
+    // returns an element that contains the nested borders that visually indicate the depth of the file
     const nestedBorders = (s = step) => {
         if (s > 1) {
             return (
@@ -97,7 +98,7 @@ export const Folder: React.FC<FolderProps> = observer((props) => {
         else return 
     }
 
-    // TODO: update temp input to hook like in '@/components/Sidebar.tsx'
+    // Callback when creating a new document input
     const setNewDocument = async (folder: boolean) => {
         if (tempInput === null || tempInput.value.trim().length === 0) {
             blurInput();
@@ -118,6 +119,7 @@ export const Folder: React.FC<FolderProps> = observer((props) => {
         store.fileTreeStore.documents.addModel(doc);
     }
 
+    // Calback when a file is created
     const addFile: React.MouseEventHandler<HTMLImageElement> = (e) => {
         e.stopPropagation();
         setOpen(true);
@@ -135,6 +137,7 @@ export const Folder: React.FC<FolderProps> = observer((props) => {
             )
         ]);
     }
+    // Callback when a folder is created
     const addFolder: React.MouseEventHandler<HTMLImageElement> = (e) => {
         e.stopPropagation();
         setOpen(true);
@@ -154,6 +157,7 @@ export const Folder: React.FC<FolderProps> = observer((props) => {
         ]);
     }
 
+    // Utility functions ...
     const setTempInput = (element: HTMLInputElement) => {
         if (element === null) return
         tempInput = element;
@@ -176,7 +180,7 @@ export const Folder: React.FC<FolderProps> = observer((props) => {
     useEffect(() => {
         setDocuments(store.fileTreeStore.documents.models)
     });
-
+    
     const selectDocument = async () => {
         setOpen(!open);
     }

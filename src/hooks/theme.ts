@@ -1,6 +1,7 @@
 import store from '@/store';
 import { useEffect, useState } from 'react'
 
+// Hook for setting the theme of the app (dark or light)
 export const useDarkMode = () => {
     let [theme, setTheme] = useState('light');
 

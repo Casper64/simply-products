@@ -51,12 +51,15 @@ const useCodeMirror = <T extends Element>(
   const [editorView, setEditorView] = useState<EditorView>();
   const { onChange } = props;
 
+  /**
+   * Create a new editor view and state and return it.
+   * @returns {Promise<EditorState>}
+   */
   const createState = async () => {
     const index = languages.findIndex(lang => lang.alias.includes("latex"));
     //@ts-ignore
     languages[index].alias.push("math")
 
-    
     const startState = EditorState.create({
       doc: props.initialDoc,
       extensions: [
@@ -86,7 +89,7 @@ const useCodeMirror = <T extends Element>(
     });
     return startState
   }
-
+  // Create a new editor state when the component is mounted.
   useEffect(() => {
     if (!refContainer.current) return;
 
@@ -100,7 +103,7 @@ const useCodeMirror = <T extends Element>(
         setEditorView(view);
       })
   }, [refContainer]);
-
+  // Update state when a new document is selected
   useEffect(() => {
     createState()
       .then(startState => {

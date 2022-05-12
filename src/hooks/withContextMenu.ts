@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { FileTreeStore } from "@/store";
 import axios from "axios";
 import { Document } from "~/models/Document";
-// import { FileDB, any } from "../filedb";
 
 
 interface UseContextMenuProps {
@@ -10,12 +9,14 @@ interface UseContextMenuProps {
     document: Document
 }
 
+// This hook is used to simplify the creation of the context menu of the filetree
 export const useContextMenu = ({store, document}: UseContextMenuProps) => {
     let [selected, setSelected] = useState(Boolean(store.selected?._id === document._id));
     let [forceSelect, setForceSelected] = useState(false);
     let [rename, setRename] = useState(false);
     let textNode: HTMLInputElement;
 
+    // Callback when the context menu is opened
     const rightClick: React.MouseEventHandler<HTMLDivElement> = (event) =>{
         event.preventDefault();
         store.setContextMenu({
@@ -30,7 +31,7 @@ export const useContextMenu = ({store, document}: UseContextMenuProps) => {
         store.addContextMenuCallback(closeContextMenu);
         setForceSelected(true);
     }
-
+    // Callback when the context menu is closed
     const closeContextMenu = () => {
         store.removeContextMenuCallback(closeContextMenu);
         if (store.contextMenu.rename) {
@@ -41,9 +42,10 @@ export const useContextMenu = ({store, document}: UseContextMenuProps) => {
             setForceSelected(false);
         }
     }
-
+    // Callback when the user types in the created input
     const keyUpContextMenu = async (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (document === null) return;
+        // If the user presses escape close the context menu and remove the created input
         if (event.key == "Escape") {
             textNode.innerHTML = document.name;
             setRename(false);
@@ -51,6 +53,8 @@ export const useContextMenu = ({store, document}: UseContextMenuProps) => {
             textNode.blur();
             store.setContextMenu({...store.contextMenu, rename: false})
         }
+        // If the uses presses enter or the input is empty close the context menu and remove the created input
+        // Should automatically trigger the callbacks when a file or folder is renamed / deleted
         else if (event.key == "Enter") {
             setForceSelected(false);
             setRename(false);
@@ -66,7 +70,7 @@ export const useContextMenu = ({store, document}: UseContextMenuProps) => {
         if (!element) return
         textNode = element;
     }
-
+    // Select the currenwt doucment when the user selects another file / document (with the contextmenu)
     useEffect(() => {
         setSelected(store.selected?._id === document._id);
     })

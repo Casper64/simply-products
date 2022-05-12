@@ -1,4 +1,4 @@
-import mongoose, { Mongoose, Types, Document as D } from "mongoose";
+import mongoose, { Document as D } from "mongoose";
 
 export interface Document extends D {
     name: string;
