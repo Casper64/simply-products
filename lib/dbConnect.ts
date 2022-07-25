@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 
+// Get the mongodb url from the environment variables
 const MONGODB_URI = process.env.MONGODB_URI
 
 if (!MONGODB_URI) {
@@ -18,7 +19,10 @@ let cached = global.mongoose
 if (!cached) {
     cached = global.mongoose = { conn: null, promise: null }
 }
-
+/**
+ * Connects to the database and returns the mongodb connection.
+ * @returns {Promise<any>}
+ */
 async function dbConnect() {
     if (cached.conn) {
         return cached.conn

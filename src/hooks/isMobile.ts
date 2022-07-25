@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-
+// You can use this hook to check whether the user is on a mobile device.
 export const useMobile = () => {
     const [mobile, setMobile] = useState(false);
 

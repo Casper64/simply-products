@@ -2,7 +2,6 @@ import axios from "axios";
 import { action, makeAutoObservable } from "mobx"
 import { Document } from "~/models/Document";
 import { ModelHandler } from ".";
-// import { any } from "../filedb";
 
 export interface ContextMenuCallback {
     (options: ContextMenuOptions): void

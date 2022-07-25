@@ -1,4 +1,4 @@
-import mongoose, { Mongoose, Types, Document } from "mongoose";
+import mongoose, {  Document } from "mongoose";
 
 export interface Category extends Document  {
     name: string;

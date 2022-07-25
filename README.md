@@ -11,11 +11,8 @@ Make and export notes easily with Simply-notes, visit the [website](https://note
 - Progressive Web App!
 
 
-
-## Images
-![https   www notes casperswebsites com](https://user-images.githubusercontent.com/43839798/149987140-1e9788e5-8454-487e-a0a9-e1f84ea8b5e6.png)
-![https   notes casperswebsites com projects 61e324ce133bc61a034092f4](https://user-images.githubusercontent.com/43839798/150003765-3c1dabc9-f3e1-40fd-9f1c-3b43b9d27809.png)
-
+## Preview
+![Simply Notes Edit View](https://raw.githubusercontent.com/Casper64/simply-products/master/assets/ss-editor.png)
 
 
 ## Info
@@ -23,6 +20,7 @@ Make and export notes easily with Simply-notes, visit the [website](https://note
 newer version of my [old simple-notes website](https://github.com/Casper64/simply-notes/tree/simply-notes-legacy) for making notes with markdown
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
 
 ## Getting Started
 
