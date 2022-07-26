@@ -7,6 +7,7 @@ html {
     overflow-x: hidden;
     min-height: 100vh;
     background-color: var(--selected-ui);
+    color: var(--text);
 }
 
 * {
@@ -32,20 +33,6 @@ html {
     --inactive-text: #9aa1ae;
 
 
-
-    /* Switch */
-    /** sunny side **/
-    --blue-background: #C2E9F6;
-    --blue-border: #72cce3;
-    --blue-color: #96dcee;
-    --yellow-background: #fffaa8;
-    --yellow-border: #f5eb71;
-    /** dark side **/
-    --indigo-background: #808fc7;
-    --indigo-border: #5d6baa;
-    --indigo-color: #6b7abb;
-    --gray-border: #e8e8ea;
-    --gray-dots: #e8e8ea;
     /** general **/
     --white: #fff;
     --error: #f6280d;
@@ -54,17 +41,18 @@ html {
 }
 
 [data-theme="dark"] {
-    --text: #fff;
+    --text: #eee;
     --textarea: #edf0f5;
     // --selected: #252930;
-    --selected: #141417;
+    --selected: hsl(240, 7%, 8%);
     // --plain-ui: #21252b;
     --plain-ui:hsl(216, 8%, 15%);
     // --selected-ui: #282c34;
     // --selected-ui: #1f222a;
     --selected-ui: hsl(225, 8%, 12%);
+    --lighter-ui: hsl(225, 8%, 20%);
     --line-numbers: #eee;
-    --selected-hover: #2C313A;
+    --selected-hover: hsl(219, 14%, 20%);
     --nested-border: #585858;
     --table-second: var(--selected-hover);
 
@@ -96,6 +84,7 @@ textarea {
     -moz-box-shadow: none;
     box-shadow: none;
     color: var(--text);
+    font-size: 14px;
 }
 
 input:focus,
@@ -216,7 +205,8 @@ a {
     
 
     &.home {
-        left: 0px;
+        left: unset;
+        right: 0;
         background-color: transparent;
         &::before, &::after {
             content: unset;

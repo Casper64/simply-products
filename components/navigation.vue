@@ -1,26 +1,23 @@
 <template>
-  <nav :class="['normal-nav', {isHome: 'home-nav'}]">
+  <nav :class="['normal-nav', {'home-nav': isHome}]">
     <div v-if="!mobile" class="nav-message">
       <NuxtLink to="/">Home</NuxtLink>
     </div>
     <div class="nav-items">
-      <div class="nav-item">
-        <NuxtLink to="/dashboard">Dashboard</NuxtLink>
+      <template v-if="user">
+        <div class="nav-item">
+          <NuxtLink to="/dashboard">Dashboard</NuxtLink>
+        </div>
+        <div class="nav-item">
+          <NuxtLink to="/auth/logout">Log out</NuxtLink>
+        </div>
+      </template>
+      <div v-else class="nav-item">
+        <NuxtLink to="/auth/login">Log in</NuxtLink>
       </div>
-      <div class="nav-item">
-        <NuxtLink to="/logout">Log out</NuxtLink>
-      </div>
-      <!-- <div class="nav-item">
-        <NuxtLink to="/logout">Log in</NuxtLink>
-      </div> -->
     </div>
   </nav>
-  <Teleport to="body">
-    <div :class="['theme-switch-container', {home: isHome}]">
-      <p>theme</p>
-      <Switch v-model="checked"/> 
-    </div>
-  </Teleport>
+  
 </template>
 
 <script lang="ts" setup>
@@ -28,7 +25,6 @@
 const route = useRoute();
 const mobile = useMobile();
 
-const checked = ref<boolean>(true);
 
 const isHome = computed(() => {
   return route.path == '/';
