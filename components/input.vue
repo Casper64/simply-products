@@ -6,7 +6,18 @@
       </div>
       <span class="hidden">{{ prettyName }}</span>
     </label>
-    <input :id="uid" autocomplete="off" :type="type || 'text'" :name="placeholder" class="form-input" :placeholder="prettyName" required @input="$emit('update:modelValue', $event.target.value)" @keyup.enter="$emit('enter', $event.target.value)">
+    <input 
+      autocomplete="off" 
+      class="form-input" 
+      required 
+      :id="uid" 
+      :type="type || 'text'" 
+      :name="placeholder" 
+      :placeholder="prettyName" 
+      :value="modelValue" 
+      @input="$emit('update:modelValue', $event.target.value)" 
+      @keyup.enter="$emit('enter', $event.target.value)"
+    >
   </div>
 </template>
 

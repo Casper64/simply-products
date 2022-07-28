@@ -24,6 +24,7 @@
 
 const route = useRoute();
 const mobile = useMobile();
+const user = useUser();
 
 
 const isHome = computed(() => {

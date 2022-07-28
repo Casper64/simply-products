@@ -18,6 +18,7 @@
 <script lang="ts" setup>
 import "~/assets/styles/main.scss";
 
+
 const route = useRoute();
 
 const checked = ref<boolean>(true);
@@ -25,4 +26,6 @@ const checked = ref<boolean>(true);
 const isHome = computed(() => {
   return ['/', '/auth/login', '/auth/logout', '/auth/signup'].includes(route.path);
 })
+
+onBeforeMount(autoLogin);
 </script>
